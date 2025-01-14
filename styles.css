@@ -1,0 +1,136 @@
+body {
+    font-family: monospace, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+header {
+    background-color: #2c3e50;
+    color: #ffb184;
+    text-align: center;
+    padding: 2em 0;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2.5em;
+    font-weight: normal;
+}
+
+nav {
+    margin-top: 1em;
+}
+
+nav a {
+    color: #ecf0f1;
+    margin: 0 1em;
+    margin: 0 auto;
+}
+
+.portfolio {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+/* Portfolio Styles */
+.portfolio-item {
+    width: 30%;
+    background-color: #c2daf1;
+    margin-bottom: 2em;
+    padding: 1em;
+    border-radius: 8px;
+    box-shadow: 0 8px, 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transform-style: preserve-3d;
+    perspective: 1000px;
+}
+
+.portfolio-item:hover {
+    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
+}
+
+.portfolio-item h3 {
+    margin-top: 0;
+    color: #2989b9;
+}
+
+footer {
+    text-align: center;
+    padding: 2em 0;
+    background-color: #34495e;
+    color: #ecf0f1;
+}
+
+footer a {
+    color: #1a8ebc;
+    text-decoration: none;
+}
+
+/* Blog Styles */
+.blog-post {
+    margin-bottom: 1.5em;
+}
+
+.blog-post h3 {
+    color: #2980b9;
+    margin-bottom: 0.5em;
+}
+
+.blog-post p {
+    line-height: 1.6;
+}
+
+/* Cursor interaction */
+.portfolio-item {
+    position: relative;
+}
+
+.portfolio-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    z-index: 1;
+}
+
+.portfolio-item:hover {
+    transform: rotateX(var(--rotateX)) rotateY(var(--rotateY));
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+    .portfolio-item {
+        width: 100%;
+    }
+}
+
+/* Floating effect and interaction with cursor */
+body {
+    perspective: 1500px;
+}
+
+.portfolio-item {
+    transform-origin: center;
+}
+
+.portfolio-item:hover {
+    animation: none;
+}
+
+@keyframes tilt {
+    0% {
+        transform: rotateX(5deg) rotateY(5deg);
+    }
+    50% {
+        transform: rotateX(-5deg) rotateY(-5deg);
+    }
+    100% {
+        transform: rotateX(5deg) rotateY(5deg);
+    }
+}
