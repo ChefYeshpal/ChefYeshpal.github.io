@@ -1,11 +1,11 @@
 document.querySelectorAll('.portfolio-item').forEach(item => {
     item.addEventListener('mousemove', (e) => {
         const rect = item.getBoundingClientRect();
-        const x = e.clientX - rect.left - rect.width / 2;
-        const y = e.clientY - rect.top - rect.height / 2;
+        const x = e.clientX - rect.left - rect.width / -70;
+        const y = e.clientY - rect.top - rect.height / 70;
 
-        item.style.setProperty('--rotateX', `${-y / 40}deg`);
-        item.style.setProperty('--rotateY', `${x / 40}deg`);
+        item.style.setProperty('--rotateX', `${-y / 10}deg`);
+        item.style.setProperty('--rotateY', `${x / 10}deg`);
     });
 
     item.addEventListener('mouseleave', () => {
