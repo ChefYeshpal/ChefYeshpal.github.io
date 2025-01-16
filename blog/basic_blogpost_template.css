@@ -3,7 +3,7 @@ body {
     margin: 0;
     padding: 0;
     font-family: monospace, sans-serif;
-    background-color: #f4f4f4;
+    background-color: #d6daff;
     color: #333;
     line-height: 1.6;
     display: flex;
@@ -50,7 +50,7 @@ a:hover {
     max-width: 100%;
     height: auto;
     margin: 1em auto;
-    border: 1px solid #ccc;
+    border: 1px solid #cecece;
     border-radius: 8px;
 }
 
@@ -76,6 +76,10 @@ a:hover {
     color: #f4f4f4;
     text-decoration: none;
     box-shadow: 0 12px 20px rgba(0, 0, 0, 0.1); /*Enhanced shadow */
+}
+
+.back-button:active {
+    background-color: #96ccff;
 }
 
 /* Style for figure and figcaption */
@@ -118,4 +122,50 @@ footer {
     background-color: #34495e;
     color: #ecf0f1;
     margin-top: auto;
+}
+
+/* Back to top button styling */
+.back-to-top {
+    position: fixed;
+    bottom: 2em;
+    right: 2em;
+    width: 2em;
+    height: 2em;
+    background-color: #2980b9;
+    color: #f2f2f2;
+    font-size: 1.5em;
+    font-weight: bold;
+    border-radius: 50%;
+    box-shadow: 0 0.5em 1em rgba(0, 0, 0, 0.3);
+    display: flex; /* Make it appear as a centered block */
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    z-index: 1000;
+    transform: scale(2); /* Initially scaled down */
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    visibility: hidden; /* Initially hidden */
+    opacity: 0;
+}
+
+/* Hover effects for back-to-top button */
+.back-to-top:hover {
+    background-color: #3498db;
+    transform: scale(1.1); /* Enlarge if hovering over */
+}
+
+.back-to-top:active {
+    background-color: #e74c3c;
+}
+
+/* Tilt effect when hovering */
+.back-to-top.tilt {
+    transform: perspective(600px) rotateX(5deg) rotateY(-5deg);
+}
+
+/* Make the button visible */
+.back-to-top.show {
+    transform: scale(1);
+    visibility: visible;
+    opacity: 1;
 }
