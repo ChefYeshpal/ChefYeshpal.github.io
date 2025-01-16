@@ -10,7 +10,7 @@ body {
 
 /* Home Page Styles */
 body.home-page {
-    background-color: #f4f4f4;
+    background-color: #e8f3fc;
     color: #333;
 }
 
@@ -42,7 +42,7 @@ body.home-page .portfolio {
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
-    padding: 2em;
+    padding: 1em;
 }
 
 body.home-page .portfolio-item {
@@ -76,6 +76,8 @@ body.home-page footer a {
     color: #1a8ebc;
     text-decoration: none;
 }
+
+/* ======================================================================= */
 
 /* Blog Page Styles */
 body.blog-page {
@@ -141,8 +143,9 @@ body.blog-page footer {
 
 body.blog-page .footer-link {
     color: #1a83bc;
+    text-decoration: none;
 }
 
 body.blog-page .footer-link:hover {
-    text-decoration: underline;
+    text-decoration: none;
 }
