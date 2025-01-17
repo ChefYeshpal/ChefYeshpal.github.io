@@ -3,13 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verifying basic addition and subtraction</title>
+    <title>Verifying Basic Addition and Subtraction</title>
+    <link rel="stylesheet" href="../blog/basic_blogpost_template.css">
+    <style>
+        .indented {
+            text-indent: 5em; /* Indent for the first line */
+        }
+    </style>
 </head>
 <body>
-    <h1>How do I verify addition and subtraction?</h1>
-    <p>Its actually pretty simple, with small exceptions.</p>
-    <p>hehehe</p>
-    <p>I'm still making this, hopefully takes some time and all... so come back later.</p>
+    <a href="/blog/index.html" class="back-button">← Back to Blog</a>
+    <h1>How to Properly Verify Addition and Subtraction (Without a Calculator!)</h1>
+    <p>Picture this: you’re stuck in a situation where you need to add or subtract large numbers, but, to your dismay, there’s no calculator in sight. Your phone is dead, and even the dust-covered abacus in the corner is missing a bead. What do you do?</p>
+    <p>Before you start spiraling into despair, let me introduce you to a time-tested method for verifying calculations: the <b>digit root</b> technique, also known as the <b>Trachtenberg method</b>. It’s simple, effective, and all you need is a sharp mind (or at least a semi-sharp one), a pen, and paper!</p>
+
+    <h2>The Basics of Addition and Verification</h2>
+    <p>Let’s start with a quick refresher: addition is combining numbers to find their total. For example:</p>
+    <ul>
+        <li>2 + 2 = 4</li>
+        <li>47 + 23 = 70</li>
+    </ul>
+    <p>But how do you check if your addition is correct without redoing the entire calculation? That’s where the digit root method steps in. Here’s how it works:</p>
+
+    <p>Example: Verify 47 + 23 = 70</p>
+    <p class="indented">1. Take the first number, 47. Add its digits: 4 + 7 = 11. Then reduce 11 to a single digit by adding again: 1 + 1 = 2.</p>
+    <p class="indented">2. Repeat this for the second number, 23: 2 + 3 = 5.</p>
+    <p class="indented">3. Add the single-digit results from steps 1 and 2: 2 + 5 = 7.</p>
+    <p class="indented">4. Now, apply the same method to the solution (70): 7 + 0 = 7.</p>
+    <p class="indented">5. If the digit root of the solution matches the sum from step 3, congratulations! Your calculation is correct.</p>
+
+    <h2>Subtraction Works Too!</h2>
+    <p>Good news! This method isn’t just for addition—it works for subtraction as well. Let’s say you’re verifying 85 - 47 = 38:</p>
+    <ul>
+        <li>For 85: 8 + 5 = 13 → 1 + 3 = 4</li>
+        <li>For 47: 4 + 7 = 11 → 1 + 1 = 2</li>
+        <li>For the solution (38): 3 + 8 = 11 → 1 + 1 = 2</li>
+    </ul>
+    <p>Now subtract the digit roots: 4 (from 85) - 2 (from 47) = 2 (from 38). It checks out!</p>
+
+    <h2>Why Does This Work?</h2>
+    <p>This method relies on a concept from modular arithmetic, specifically modulo 9. Each number can be reduced to a single-digit "digital root," which behaves predictably when added or subtracted. Since every whole number modulo 9 has a unique digital root, this method is like a quick checksum for your math.</p>
+
+    <h2>But Wait, There’s a Catch!</h2>
+    <p>“Wow, this is amazing! Does it work every time?”</p>
+    <p>Not always. There’s a teensy tinsy exception involving multiples of 9. Why? Because the digital root of any multiple of 9 is always 9. For example:</p>
+    <ul>
+        <li>18 → 1 + 8 = 9</li>
+        <li>27 → 2 + 7 = 9</li>
+        <li>81 → 8 + 1 = 9</li>
+    </ul>
+    <p>So, if your question or answer involves multiples of 9, the method might not give you enough clarity to catch an error. You’ll have to rely on your trusty math skills instead!</p>
+
+    <h2>Give It a Try!</h2>
+    <p>Next time you’re faced with a tough addition or subtraction problem, try the digit root method. It’s quick, fun, and an excellent mental workout. Who needs a calculator when you’ve got your brain?</p>
+
     <a href="/blog/">Back to Blog</a>
+    <script src="../blog/basic_blogpost_template.js"></script>
+    <script src="../blog/scroll_to_top.js"></script>
+    <script src="../blog/backbutton_nooverlap.js"></script>
+    <div id="back-to-top" class="back-to-top">↑</div>
 </body>
 </html>
