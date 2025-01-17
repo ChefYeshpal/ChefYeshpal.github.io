@@ -1,0 +1,26 @@
+body {
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+    font-family: Arial, sans-serif;
+}
+
+.pattern {
+    position: relative;
+}
+
+.semi-circle {
+    width: 150px;
+    height: 75px;
+    background: radial-gradient(circle, #ff6f61, #ffb88c);
+    border-radius: 150px 150px 0 0;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.semi-circle:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+}
