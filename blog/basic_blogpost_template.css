@@ -9,7 +9,7 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    padding: 0 2em;
+    padding: 1em 1em;
 }
 
 /* Header Styling */
@@ -20,11 +20,28 @@ h1 {
     color: #2c3e50;
 }
 
+h2, h3, h4, h5, h6 {
+    max-width: 800px;
+    margin: 2em auto;
+    padding: 0 0.01em;
+    text-align: left;
+}
+
+ul, ol {
+    max-width: 800px;
+    margin: 2em auto;
+    padding-left: 2em;
+}
+
+li {
+    text-align: left;
+}
+
 /* Paragraph Styling */
 p {
     max-width: 800px;
-    margin: 1em auto;
-    padding: 0 20em;
+    margin: 2em auto;
+    padding: 0 0.01em;
     text-align: justify;
 }
 
@@ -56,8 +73,8 @@ a:hover {
 
 /* Back button Styling */
 .back-button {
-    position: absolute;
-    top: 2em;
+    position: fixed;
+    top: 2em; /* Start position */
     left: 2em;
     font-size: 1em;
     font-weight: bold;
@@ -69,18 +86,24 @@ a:hover {
     background-color: #f4f4f4;
     box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1); /* Floating effect */
     transition: transform 0.2s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+    z-index: 10;
 }
 
 .back-button:hover {
     background-color: #2980b9;
     color: #f4f4f4;
     text-decoration: none;
-    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.1); /*Enhanced shadow */
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.1); /* Enhanced shadow */
 }
 
 .back-button:active {
     background-color: #96ccff;
 }
+
+h1 {
+    margin-top: -0.05em; /* Ensure there is enough space above the heading */
+}
+
 
 /* Style for figure and figcaption */
 .image-with-caption {
@@ -88,6 +111,7 @@ a:hover {
     text-align: center; 
     margin: 20px auto; 
     max-width: 80%; 
+    text-align: center;
 }
 
 .image-with-caption img {
@@ -104,14 +128,91 @@ a:hover {
     font-style: italic; 
 }
 
-/* Mobile specific styling */
+/* Image with caption on left */
+.image-with-caption-left {
+    display: flex;
+    flex-direction: row; /* Change to row for side-by-side layout */
+    align-items: flex-start;
+    margin: 20px auto;
+    max-width: 90%;
+    gap: 20px; /* Add consistent spacing */
+}
 
+.image-with-caption-left img {
+    max-width: 50%; /* Adjust image width */
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.image-with-caption-left figure {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.image-with-caption-left figcaption {
+    font-size: 0.9em;
+    color: #555;
+    margin-top: 5px;
+    font-style: italic;
+    text-align: right;
+}
+
+.image-with-caption-left .content {
+    flex: 1; /* Allow content to expand */
+    text-align: justify;
+    font-size: 1.1em;
+    line-height: 1.5;
+}
+
+/* Image with caption on the right */
+.image-with-caption-right {
+    display: flex;
+    flex-direction: row-reverse; /* Reverse the order for right image */
+    align-items: flex-start;
+    margin: 20px auto;
+    max-width: 90%;
+    gap: 20px; /* Add consistent spacing */
+}
+
+.image-with-caption-right figure {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.image-with-caption-right img {
+    max-width: 50%;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.image-with-caption-right figcaption {
+    font-size: 0.9em;
+    color: #555;
+    margin-top: 5px;
+    font-style: italic;
+    text-align: left;
+}
+
+.image-with-caption-right .content {
+    flex: 1; /* Allow content to expand */
+    text-align: justify;
+    font-size: 1.1em;
+    line-height: 1.5;
+}
+
+/* Responsive adjustments for small screens */
 @media (max-width: 768px) {
-    .back-button {
-        transform: none !important;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Smaller shadow */
-        background-color: #2980b9; /* Solid color for simplicity */
-        color: #f4f4f4;
+    .image-with-caption-left, 
+    .image-with-caption-right {
+        flex-direction: column; /* Stack vertically */
+        gap: 10px; /* Reduce spacing */
+    }
+
+    .image-with-caption-left img,
+    .image-with-caption-right img {
+        max-width: 100%; /* Full width on small screens */
     }
 }
 
