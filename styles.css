@@ -15,8 +15,8 @@ p, h1, h2, h3, h4, h5, h6 {
 
 /* Home Page Styles */
 body.home-page {
-    background-color: #e8f3fc;
-    color: #333;
+    background-color: #474141;
+    color: #ffffff;
 }
 
 body.home-page header {
@@ -52,7 +52,7 @@ body.home-page .portfolio {
 
 body.home-page .portfolio-item {
     width: 30%;
-    background-color: #c2daf1;
+    background-color: #7991a8;
     margin-bottom: 2em;
     padding: 1em;
     border-radius: 8px;
