@@ -1,14 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chef's blog</title>
-    <link rel="stylesheet" href="../styles.css">
-    <link rel="stylesheet" href="styles.css" type="text/css">
-    <link rel="icon" sizes="180x180" href="../Images/Profile_cartoon_chubby.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="../Images/Profile_cartoon_chubby">
-    <link rel="icon" type="image/png" sizes="16x16" href="../Images/Profile_cartoon_chubby">
+    <title>Chef's Blog</title>
+    <link rel="stylesheet" href="blog.css"> <!-- Updated CSS file -->
+    <link rel="icon" href="../Images/Profile_cartoon_chubby.png" sizes="180x180">
     <link rel="manifest" href="Images/site.webmanifest">
 </head>
 
@@ -19,25 +16,30 @@
         <p><i><b>Heya, this is still under construction</b></i></p>
     </header>
 
-    <!-- Blog Post Previews -->
-    <div class="blog-container">
-        <!-- Blog Post's -->
-        <div class="blog-post">
-            <h3><a href="periodic_table.html">Ze Periodic Table</a></h3>
-            <p>This is for my rant on the periodic table, where I explore its quirks, trends, and mysteries.</p>
-            <a href="periodic_table.html">Read more...</a>
-        </div>
+    <!-- Blog Content Container -->
+    <div class="container">
+        <div class="blog-container">
+            <!-- Blog Post 1 -->
+            <div class="blog-post">
+                <h3><a href="periodic_table.html">Ze Periodic Table</a></h3>
+                <p>Join me as I explore the quirks, trends, and mysteries of the periodic table. A mix of science and fun!</p>
+                <a href="periodic_table.html" class="button">Read more...</a>
+            </div>
 
-        <div class="blog-post">
-            <h3><a href="verification_of_additionandsubtraction.html">Verifying addition and subtraction, how to?</a></h3>
-            <p>I'll share a method to verify if your addition and subtraction is correct, and dont worry, it has very less exceptions.</p>
-            <a href="verification_of_additionandsubtraction.html">Read more...</a>
-        </div>
-        <div class="blog-post">
-		<h3><a href="Testing1.html">Test Blog Page</a></h3>
-            <p>This is a test blog, to see all the weird stuff I may try to do.</p>
-            <p>hehehehe, this is 2nd line.</p>
-            <a href="Testing1.html">Read more...</a>
+            <!-- Blog Post 2 -->
+            <div class="blog-post">
+                <h3><a href="verification_of_additionandsubtraction.html">Verifying Addition & Subtraction—How to?</a></h3>
+                <p>Discover a simple method to verify if your addition and subtraction are correct, with minimal exceptions.</p>
+                <a href="verification_of_additionandsubtraction.html" class="button">Read more...</a>
+            </div>
+
+            <!-- Blog Post 3 (Test Blog) -->
+            <div class="blog-post">
+                <h3><a href="Testing1.html">Test Blog Page</a></h3>
+                <p>This is a test blog to experiment with different layouts and content. Stay tuned for more fun stuff!</p>
+                <p>Hehehehe, this is the second line.</p>
+                <a href="Testing1.html" class="button">Read more...</a>
+            </div>
         </div>
     </div>
 
@@ -45,7 +47,8 @@
     <footer>
         <a href="../index.html" class="footer-link">Back Home</a> |
         <a href="#top" class="footer-link">Back to Top</a> |
-        <a href="../blog/fun_projects/index.html" class="footer-link">Fun projects</a>
+        <a href="../blog/fun_projects/index.html" class="footer-link">Fun Projects</a>
     </footer>
 </body>
 </html>
+
