@@ -1,20 +1,20 @@
 /* Import fonts */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
 
 /* Base styles */
 body {
-    font-family: 'Inter', sans-serif;
+    font-family: "Inter", sans-serif;
     margin: 0;
     padding: 0;
     line-height: 1.8;
-    color: #3E2723; /* Deep brown for better contrast */
+    color: #3e2723; /* Deep brown for better contrast */
     background-color: #ffc678; /* Warm creamy background */
 }
 
 /* Header styles */
 header {
-    background-color: #FFB74D; /* Soft warm orange */
-    color: #3E2723;
+    background-color: #ffb74d; /* Soft warm orange */
+    color: #3e2723;
     text-align: center;
     padding: 4rem 1rem 2rem;
     position: relative;
@@ -27,7 +27,7 @@ header::before {
     position: absolute;
     width: 600px;
     height: 600px;
-    background-color: #FF7043; /* Sunset orange */
+    background-color: #ff7043; /* Sunset orange */
     border-radius: 50%;
     top: -250px;
     left: 50%;
@@ -36,7 +36,8 @@ header::before {
     opacity: 0.3;
 }
 
-header h1, header p {
+header h1,
+header p {
     position: relative;
     z-index: 1;
 }
@@ -51,7 +52,7 @@ header h1 {
 header p {
     font-weight: 400;
     font-size: 1.2rem;
-    color: #FF6F00; /* Warm orange */
+    color: #ff6f00; /* Warm orange */
     margin: 0;
 }
 
@@ -71,26 +72,28 @@ header p {
 
 /* Blog Post Styling */
 .blog-post {
-    background-color: #FFF3E0; /* Light peach background */
+    background-color: #fff3e0; /* Light peach background */
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     min-height: 250px;
-    border: 2px solid #FFB74D; /* Border with warm hue */
+    border: 2px solid #ffb74d; /* Border with warm hue */
 }
 
 .blog-post:hover {
     transform: translateY(-8px);
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-    background-color: #FFECB3; /* Slightly brighter on hover */
+    background-color: #ffecb3; /* Slightly brighter on hover */
 }
 
 .blog-post h3 {
-    color: #E64A19; /* Deep orange-red */
+    color: #e64a19; /* Deep orange-red */
     margin: 0 0 10px;
     font-size: 1.5rem;
     text-transform: uppercase;
@@ -98,60 +101,93 @@ header p {
 
 .blog-post p {
     font-size: 1rem;
-    color: #5D4037;
+    color: #5d4037;
     margin-bottom: 10px;
     flex-grow: 1;
 }
 
 .blog-post a {
     text-decoration: none;
-    color: #D84315; /* Darker red-orange */
+    color: #d84315; /* Darker red-orange */
     font-weight: bold;
     transition: color 0.2s;
 }
 
 .blog-post a:hover {
-    color: #BF360C; /* Deep crimson */
+    color: #bf360c; /* Deep crimson */
 }
 
 /* Footer Styling */
 footer {
-    background-color: #FF7043;
+    background-color: #ff7043;
     color: white;
     text-align: center;
     padding: 1.5rem 0;
     margin-top: 2rem;
     font-size: 0.9rem;
-    border-top: 4px solid #FFB74D;
+    border-top: 4px solid #ffb74d;
 }
 
 .footer-link {
-    color: #FFECB3;
+    color: #ffecb3;
     text-decoration: none;
     margin: 0 10px;
     font-weight: 500;
 }
 
 .footer-link:hover {
-    color: #FFEB3B;
+    color: #ffeb3b;
 }
 
 /* Button Style */
 .button {
     display: inline-block;
-    padding: 10px 20px;
-    background-color: #FF6F00;
-    color: white;
-    border-radius: 8px;
-    font-weight: 500;
-    transition: background-color 0.3s, transform 0.2s;
-    margin-top: 10px;
+    padding: 12px 24px;
+    background-color: #f8e2ce; /* Light warm background */
+    color: #b84c24; /* Rich terracotta text color */
+    border-radius: 6px;
+    font-weight: 600; /* Bold for better visibility */
+    letter-spacing: 0.02em; /* Subtle letter spacing for readability */
+    transition: all 0.25s ease;
+    margin-top: 14px;
     text-align: center;
+    text-decoration: none;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e9cdb1; /* Subtle border */
+    position: relative;
+    overflow: hidden;
+    font-size: 0.95rem;
 }
 
 .button:hover {
-    background-color: #D84315;
+    background-color: #fff8f0; /* Lighter on hover */
+    color: #a03e1a; /* Darker text on hover for contrast */
     transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.button:active {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+/* Add a subtle shine effect on hover */
+.button::after {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -60%;
+    width: 20%;
+    height: 200%;
+    opacity: 0;
+    transform: rotate(30deg);
+    background: rgba(91, 57, 34, 0.2);
+    transition: all 0.55s ease-out;
+}
+
+.button:hover::after {
+    opacity: 1;
+    left: 120%;
 }
 
 /* Responsive Design */
@@ -169,4 +205,3 @@ footer {
         padding: 1rem;
     }
 }
-
