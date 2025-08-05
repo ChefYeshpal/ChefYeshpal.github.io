@@ -1,0 +1,104 @@
+body {
+  background-color: #23243a;
+  color: #cbd5e1;
+  font-family: 'Fira Mono', 'Consolas', monospace;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+.toc {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 180px;
+  height: 100vh;
+  background: #191a2a;
+  border-right: 1px solid #333a52;
+  padding: 30px 20px 20px 16px;
+  box-sizing: border-box;
+}
+
+.toc-title {
+  color: #a3cef1;
+  font-size: 1.25em;
+  font-family: monospace;
+  margin-bottom: 16px;
+  letter-spacing: 0.08em;
+}
+
+.toc ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.toc li {
+  margin-bottom: 14px;
+}
+
+.toc a {
+  color: #80c7fa;
+  text-decoration: none;
+  transition: color 0.18s;
+  font-size: 1em;
+}
+
+.toc a:hover {
+  color: #fff4db;
+  text-decoration: underline;
+}
+
+.main-content {
+  margin-left: 210px;
+  padding: 38px 7vw 3vw 7vw;
+  min-height: 100vh;
+}
+
+header {
+  margin-bottom: 30px;
+  text-align: left;
+}
+
+h1 {
+  font-size: 3.2em;
+  color: #e4c4fe;
+  font-family: monospace;
+  font-weight: normal;
+  margin-top: 0;
+  letter-spacing: 0.16em;
+  background: none;
+}
+
+h2 {
+  font-size: 2em;
+  margin-top: 44px;
+  margin-bottom: 9px;
+  color: #a3cef1;
+  font-family: monospace, monospace;
+  font-weight: normal;
+  letter-spacing: 0.09em;
+}
+
+ul {
+  padding-left: 20px;
+}
+
+li {
+  font-size: 1.03em;
+  margin-bottom: 7px;
+}
+
+a {
+  color: #82cfff;
+  text-decoration: none;
+  transition: color 0.15s;
+  font-family: inherit;
+  word-break: break-all;
+}
+
+a:hover {
+  color: #dabfff;
+  text-decoration: underline;
+}
+

@@ -1,0 +1,73 @@
+body {
+  background: #212236;
+  color: #e2e8f0;
+  font-family: 'Fira Mono', 'Consolas', monospace;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 720px;
+  margin: 48px auto 0 auto;
+  background: none;
+  padding: 32px 18px 40px 18px;
+}
+
+h1 {
+  font-size: 2.3em;
+  margin-top: 0;
+  color: #bfe3ff;
+  font-family: monospace;
+  margin-bottom: 7px;
+}
+
+.back-link {
+  margin-bottom: 12px;
+  font-size: 1.1em;
+}
+.back-link a {
+  color: #b6fcd5;
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.back-link a:hover {
+  color: #a3cef1;
+  text-decoration: underline;
+}
+
+.timestamp {
+  color: #4b566c;
+  font-size: 1em;
+  font-family: monospace;
+  margin-bottom: 24px;
+}
+
+.blog-content {
+  font-family: inherit;
+}
+
+.blog-content h2, .blog-content h3, .blog-content h4 {
+  color: #dabfff;
+  margin-top: 26px;
+}
+
+.blog-content p, .blog-content ul, .blog-content ol {
+  color: #cbd5e1;
+  font-size: 1.1em;
+  margin-bottom: 16px;
+}
+
+.blog-content pre, .blog-content code {
+  background: #191a2a;
+  color: #d6bfff;
+  border-radius: 7px;
+  padding: 8px 12px;
+  font-family: inherit;
+  font-size: 1em;
+  overflow-x: auto;
+}
+
+.blog-content ul, .blog-content ol {
+  margin-left: 24px;
+}
+

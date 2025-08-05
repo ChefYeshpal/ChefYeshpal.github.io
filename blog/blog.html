@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Blog</title>
+  <link rel="stylesheet" href="blog.css" />
+</head>
+<body>
+  <main>
+    <header>
+      <h1>Blog</h1>
+      <h2>writing nonesense</h2>
+      <div class="back-link">
+        <a href="../index.html">go back?</a>
+      </div>
+    </header>
+
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder="search the blogposts...">
+    </div>
+
+    <section id="blogPosts">
+      <article class="blogpost" data-title="lorem_ipsum" data-summary="A chill introduction, what's up with me, and some site updates.">
+	      <a href="lorem_ipsum.html"><h3>First Blog Post</h3></a>
+        <div class="summary">A chill introduction, what's up with me, and some site updates.</div>
+        <span class="timestamp">12 Jun 2024</span>
+      </article>
+      <div class="divider">______________________________</div>
+      <article class="blogpost" data-title="Cool Things About Automation" data-summary="Thoughts about automating chores using Shell and Python.">
+        <h3>Cool Things About Automation</h3>
+        <div class="summary">Thoughts about automating chores using Shell and Python.</div>
+        <span class="timestamp">11 Jun 2024</span>
+      </article>
+      <div class="divider">______________________________</div>
+      <!-- Add more blogposts as needed using the same structure -->
+    </section>
+  </main>
+
+  <script>
+    // Filter blog posts based on search input
+    const search = document.getElementById('searchInput');
+    search.addEventListener('input', function () {
+      const q = this.value.toLowerCase();
+      document.querySelectorAll('.blogpost').forEach(post => {
+        const title = post.getAttribute('data-title').toLowerCase();
+        const summary = post.getAttribute('data-summary').toLowerCase();
+        const visible = title.includes(q) || summary.includes(q);
+        post.style.display = visible ? '' : 'none';
+        // Hide/show corresponding divider
+        const divider = post.nextElementSibling;
+        if (divider && divider.classList.contains("divider")) divider.style.display = visible ? '' : 'none';
+      });
+    });
+  </script>
+</body>
+</html>
+
