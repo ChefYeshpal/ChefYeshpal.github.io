@@ -68,3 +68,7 @@ a:hover {
   font-size: 0.95em;
 }
 
+#dino-cursor {
+  transition: left 0.08s, top 0.08s;
+}
+
