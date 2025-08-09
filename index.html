@@ -15,7 +15,7 @@
       Hi there, I'm Dhruva (not Yeshpal, that's my mama)!<br>
       This is a website where I'll test stuff, you can explore my <a href="#projects">projects here</a> and see my <a href="#skills">skills</a>, or check out my <a href="blog/blog.html">blog here</a>.
     </div>
-    <img id="dino-cursor" src="images/dinogame1.png" style="position:fixed; top:22px; left:22px; width:64px; z-index:1000; pointer-events:none;">
+    <img id="sprite" src="images/lildemonsprite.png" alt="sprite">
     <div class="desc">
 	    Also, <a href="link.html"> this </a> is a list of stuff I'm currently liking. Includes playlists and such.
     </div>
@@ -46,46 +46,6 @@
       &copy; 2024 Dhruva | <a href="https://github.com/chefyeshpal">GitHub</a> | Just here for fun and learning.
     </div>
   </div>
-<script>
-const dino = document.getElementById('dino-cursor');
-const dinoFrames = [
-  'images/dinogame1.png',
-  'images/dinogame2.png',
-  'images/dinogame3.png'
-];
-let frame = 0;
-
-// Dino animation loop
-setInterval(() => {
-  frame = (frame + 1) % dinoFrames.length;
-  dino.src = dinoFrames[frame];
-}, 140);
-
-// Position logic
-let mouseX = 22, mouseY = 22;  // Default top-left padding
-let dinoX = 22, dinoY = 22;    // Dino starts here
-document.addEventListener('mousemove', (e) => {
-  mouseX = e.clientX + 12; // Offset from cursor
-  mouseY = e.clientY + 12;
-});
-
-// Animation for smooth following
-function followCursor() {
-  // "Lerp" calculation for smooth motion
-  dinoX += (mouseX - dinoX) * 0.18; // The '0.18' controls speed/smoothness
-  dinoY += (mouseY - dinoY) * 0.18;
-  dino.style.left = dinoX + 'px';
-  dino.style.top = dinoY + 'px';
-  requestAnimationFrame(followCursor);
-}
-followCursor();
-
-// On load, start at top-left
-window.addEventListener('load', () => {
-  dino.style.left = '22px';
-  dino.style.top = '22px';
-});
-</script>
 </body>
 </html>
 

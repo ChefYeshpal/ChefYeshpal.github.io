@@ -68,7 +68,12 @@ a:hover {
   font-size: 0.95em;
 }
 
-#dino-cursor {
-  transition: left 0.08s, top 0.08s;
+#sprite {
+  position: fixed;
+  top: 20px;   /* padding from top */
+  right: 20px; /* padding from right */
+  width: 128px;
+  z-index: 1000;
+  pointer-events: none;
 }
 
