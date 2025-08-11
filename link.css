@@ -102,3 +102,12 @@ a:hover {
   text-decoration: underline;
 }
 
+#sprite {
+  position: fixed;
+  /*top: 20px; */
+  bottom: 20px;
+  right: 20px;
+  width: 128px;
+  z-index: 1000;
+  pointer-events: none;
+}
