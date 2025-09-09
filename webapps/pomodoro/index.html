@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Pomodoro Timer</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" type="image/png" href="piko.png">
+</head>
+<body>
+  <main>
+
+    <div class="timer-section">
+      <div id="timer-box" class="red-bg">
+        <span id="timer-label">Work Time</span>
+        <span id="timer">25:00</span>
+      </div>
+      <div class="control-row">
+        <button id="startBtn">▶️ Start</button>
+        <button id="stopBtn">⏹️ Stop</button>
+        <button id="skipBtn">⏭️ Skip</button>
+        <button id="editBtn">⚙️ Edit Session</button>
+      </div>
+    </div>
+    <div class="stats-row">
+      <div class="stat-box">Work: <span id="workTime">25</span> min</div>
+      <div class="stat-box">Short Break: <span id="shortBreak">5</span> min</div>
+      <div class="stat-box">Long Break: <span id="longBreak">15</span> min</div>
+      <div class="stat-box">Pomodoros: <span id="pomodoroCount">0</span></div>
+    </div>
+    <section class="tasks-section">
+      <h2>Tasks:</h2>
+      <ul id="tasksList"></ul>
+      <button id="addTaskBtn">Add a Task</button>
+    </section>
+    <!-- Dialog for settings -->
+    <div class="dialog-backdrop" id="dialogBackdrop"></div>
+    <div class="dialog" id="sessionDialog">
+      <h3>Edit Pomodoro Settings</h3>
+      <label>Work Time (min): <input type="number" id="workInput" min="1" max="60"></label>
+      <label>Short Break (min): <input type="number" id="shortInput" min="1" max="20"></label>
+      <label>Long Break (min): <input type="number" id="longInput" min="5" max="60"></label>
+      <label>Pomodoros until long break: <input type="number" id="intervalInput" min="1" max="12"></label>
+      <div class="dialog-buttons">
+        <button id="dialogSave">Save</button>
+        <button id="dialogCancel">Cancel</button>
+      </div>
+    </div>
+    <div id="gravityToggleWrapper" style="position: fixed; bottom: 12px; right: 12px; z-index: 1200;">
+        <input type="checkbox" id="gravityToggle" style="width: 40px; height: 20px; cursor: pointer;">
+    </div>
+  </main>
+  <script src="main.js"></script>
+  <script src="gravity.js"></script>
+<script>
+(function createUtcAnalogClock(){
+    const clockId = 'utcAnalogClock';
+    if (document.getElementById(clockId)) return;
+
+    const container = document.createElement('div');
+    container.id = clockId;
+    document.body.appendChild(container);
+
+    const style = document.createElement('style');
+    style.textContent = `
+        #${clockId} {
+            width: 72px;
+            height: 72px;
+            position: fixed;
+            top: 12px;
+            left: 12px; /* moved to top-left */
+            z-index: 2000;
+            border-radius: 50%;
+            background: white;
+            border: 2px solid #000;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+            font-family: sans-serif;
+        }
+        #${clockId} .face {
+            position: relative;
+            width: 88%;
+            height: 88%;
+            border-radius: 50%;
+            display: block;
+        }
+        #${clockId} .tick {
+            position: absolute;
+            width: 2px;
+            height: 6%;
+            left: 50%;
+            top: 2%;
+            background: #000;
+            transform-origin: 50% 100%;
+            opacity: 0.7;
+        }
+        /* Hands base */
+        #${clockId} .hand {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform-origin: 50% 100%;
+            transform: translate(-50%, -100%) rotate(0deg);
+            border-radius: 2px;
+            /* smooth trailing rotation (helps create a soft motion) */
+            transition: transform 120ms linear;
+        }
+        /* soft trailing glow at the edge of each hand using ::after */
+        #${clockId} .hand::after {
+            content: '';
+            position: absolute;
+            top: 0; /* the tip of the hand */
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 2px;
+            pointer-events: none;
+        }
+        #${clockId} .hour {
+            width: 4px;
+            height: 26%;
+            background: #000;
+            margin-left: -2px;
+            transition: transform 220ms cubic-bezier(.4,0,.2,1);
+        }
+        #${clockId} .hour::after {
+            width: 6px;
+            height: 10px;
+            background: #000;
+            margin-left: -3px;
+            opacity: 0.28;
+            filter: blur(3px);
+        }
+        #${clockId} .minute {
+            width: 3px;
+            height: 36%;
+            background: #000;
+            margin-left: -1.5px;
+            transition: transform 160ms cubic-bezier(.4,0,.2,1);
+        }
+        #${clockId} .minute::after {
+            width: 5px;
+            height: 14px;
+            background: #000;
+            margin-left: -2.5px;
+            opacity: 0.4;
+            filter: blur(4px);
+        }
+        #${clockId} .second {
+            width: 2px;
+            height: 40%;
+            background: #d00;
+            margin-left: -1px;
+            transition: transform 80ms linear;
+        }
+        #${clockId} .second::after {
+            width: 2px;
+            height: 18px;
+            background: #d00;
+            margin-left: -1px;
+            opacity: 0.85;
+            filter: blur(6px);
+            box-shadow: 0 0 6px rgba(208,0,0,0.6);
+        }
+        #${clockId} .center {
+            position: absolute;
+            width: 8%;
+            height: 8%;
+            background: #000;
+            border-radius: 50%;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 5;
+        }
+        #${clockId} .label {
+            position: absolute;
+            bottom: -18px; /* moved label further down */
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 10px;
+            color: #000;
+            pointer-events: none;
+        }
+    `;
+    document.head.appendChild(style);
+
+    // Build clock face
+    const face = document.createElement('div');
+    face.className = 'face';
+    container.appendChild(face);
+
+    // hour marks (12 ticks)
+    for (let i = 0; i < 12; i++) {
+        const tick = document.createElement('div');
+        tick.className = 'tick';
+        tick.style.transform = `translateX(-50%) rotate(${i * 30}deg)`;
+        if (i % 3 === 0) tick.style.height = '9%';
+        face.appendChild(tick);
+    }
+
+    // hands
+    const hourHand = document.createElement('div');
+    hourHand.className = 'hand hour';
+    face.appendChild(hourHand);
+
+    const minuteHand = document.createElement('div');
+    minuteHand.className = 'hand minute';
+    face.appendChild(minuteHand);
+
+    const secondHand = document.createElement('div');
+    secondHand.className = 'hand second';
+    face.appendChild(secondHand);
+
+    const centerDot = document.createElement('div');
+    centerDot.className = 'center';
+    face.appendChild(centerDot);
+
+    const label = document.createElement('div');
+    label.className = 'label';
+    label.textContent = 'UTC';
+    container.appendChild(label);
+
+    // Update loop using UTC time
+    function update() {
+        const now = new Date();
+        const hours = now.getUTCHours() % 12;
+        const minutes = now.getUTCMinutes();
+        const seconds = now.getUTCSeconds();
+        const ms = now.getUTCMilliseconds();
+
+        const secondAngle = (seconds + ms / 1000) * 6; // 360/60
+        const minuteAngle = (minutes + seconds / 60 + ms/60000) * 6; // 360/60
+        const hourAngle = (hours + minutes / 60 + seconds/3600) * 30; // 360/12
+
+        // apply rotation; transitions create a soft trailing effect together with the ::after blur
+        hourHand.style.transform = `translate(-50%, -100%) rotate(${hourAngle}deg)`;
+        minuteHand.style.transform = `translate(-50%, -100%) rotate(${minuteAngle}deg)`;
+        secondHand.style.transform = `translate(-50%, -100%) rotate(${secondAngle}deg)`;
+
+        requestAnimationFrame(update);
+    }
+
+    requestAnimationFrame(update);
+})();
+</script>
+</body>
+</html>

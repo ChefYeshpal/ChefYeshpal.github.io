@@ -1,0 +1,496 @@
+body {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: #121212; /* fallback default */
+  color: #ddd;
+  margin: 0;
+  min-height: 100vh;
+}
+
+body.work-bg {
+  background: #ff897c; /* pastel red */
+  color: #4a1c1c;
+}
+
+body.break-bg {
+  background: #7abdff; /* pastel blue */
+  color: #1c3d5a;
+}
+
+main {
+  background: inherit;
+  min-height: 100vh;
+  width: 100%;
+  padding: 40px 0;
+  transition: background-color 0.6s ease, color 0.6s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+h1, .subtitle {
+  text-align: center;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: inherit;
+}
+
+.subtitle {
+  margin-top: 0;
+  font-size: 1.2rem;
+  color: #ee4444;
+}
+
+.timer-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 24px 0 14px;
+}
+
+#timer-box {
+  width: 280px;
+  height: 120px;
+  border-radius: 20px;
+  box-shadow: 0 6px 32px rgba(220,0,0,0.07);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+  transition: background 0.3s;
+}
+
+.red-bg {
+  background: linear-gradient(135deg, #e57373 80%, #ff7979 100%);
+  box-shadow: 0 6px 32px rgba(220,0,0,0.4);
+}
+
+.blue-bg {
+  background: linear-gradient(135deg, #65a2ff 80%, #6dd5fa 100%);
+  box-shadow: 0 6px 32px rgba(50,120,250,0.4);
+}
+
+#timer-label {
+  font-size: 1.1em;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 4px;
+}
+
+#timer {
+  font-size: 2.8em;
+  font-weight: bold;
+  color: #fff;
+  letter-spacing: 2px;
+}
+
+.control-row {
+  display: flex;
+  gap: 12px;
+}
+
+/* Base button style: subtle shadows for minimal shine */
+button {
+  background: linear-gradient(145deg, #ededed, #e4e4e4);
+  color: #333;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 30px;
+  box-shadow:
+    2px 2px 5px #bebebe,
+    -2px -2px 5px #ffffff;
+  cursor: pointer;
+  font-size: 1em;
+  user-select: none;
+  transition: all 0.25s ease;
+  margin: 0 6px;
+  font-weight: 600;
+}
+
+/* Buttons in work state (red hue) */
+button.work-btn {
+  background: linear-gradient(145deg, #cc6464, #da6060);
+  color: #7a2c2c;
+  box-shadow:
+    2px 2px 5px #c58787,
+    -2px -2px 5px #da7c7c;
+}
+button.work-btn:hover {
+  background: linear-gradient(145deg, #d48282, #c27878);
+  color: #601f1f;
+  box-shadow:
+    1px 1px 4px #a46464,
+    -1px -1px 4px #e98181;
+}
+button.work-btn:active {
+  transform: translateY(3px);
+  box-shadow:
+    inset 2px 2px 4px #a45454,
+    inset -2px -2px 4px #b45d5d;
+  color: #500d0d;
+}
+
+/* Buttons in break state (blue hue) */
+button.break-btn {
+  background: linear-gradient(145deg, #7294d8, #5292e6);
+  color: #255b9d;
+  box-shadow:
+    2px 2px 5px #749dd3,
+    -2px -2px 5px #638aac;
+}
+button.break-btn:hover {
+  background: linear-gradient(145deg, #7aa7cc, #6087b8);
+  color: #1c4476;
+  box-shadow:
+    1px 1px 4px #5a87c4,
+    -1px -1px 4px #71a3c7;
+}
+button.break-btn:active {
+  transform: translateY(3px);
+  box-shadow:
+    inset 2px 2px 4px #5279b5,
+    inset -2px -2px 4px #7a9bbe;
+  color: #153459;
+}
+
+/* Stats row base style */
+.stats-row {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 24px;
+  width: 100%;
+}
+
+/* Base stats box style */
+.stat-box {
+  background: #fafafa;
+  color: #333;
+  padding: 8px 18px;
+  border-radius: 12px;
+  box-shadow: 6px 6px 12px #dcdcdc,
+              -6px -6px 12px #ffffff;
+  font-size: 1em;
+  text-align: center;
+  transition: background-color 0.35s, color 0.35s;
+}
+
+/* Stats boxes - work color */
+.stat-box.work-color {
+  background: #e28080;
+  color: #7e2c2c;
+  box-shadow:
+    6px 6px 12px #bc8a8a,
+    -6px -6px 12px #cc6464;
+}
+
+/* Stats boxes - break color */
+.stat-box.break-color {
+  background: #78aae4;
+  color: #1868bd;
+  box-shadow:
+    6px 6px 12px #7d9aca,
+    -6px -6px 12px #4e789c;
+}
+
+/* Tasks section base style (neutral fallback) */
+.tasks-section {
+  width: 330px;
+  border-radius: 14px;
+  padding: 21px 16px 27px;
+  margin: 32px 0 12px;
+  transition: background 0.35s ease, color 0.35s ease, box-shadow 0.35s ease;
+}
+
+/* Work mode tasks section - matching work button hues */
+.tasks-section.work-task {
+  background: linear-gradient(145deg, #cc6464, #da6060);
+  color: #7a2c2c;
+  box-shadow:
+    6px 6px 12px #c58787,
+    -6px -6px 12px #da7c7c;
+}
+
+/* Break mode tasks section - matching break button hues */
+.tasks-section.break-task {
+  background: linear-gradient(145deg, #7294d8, #5292e6);
+  color: #255b9d;
+  box-shadow:
+    6px 6px 12px #749dd3,
+    -6px -6px 12px #638aac;
+}
+
+/* Heading matches color for current mode */
+.tasks-section h2 {
+  margin: 0 0 14px;
+  font-size: 1.18em;
+  color: inherit;
+  transition: color 0.35s ease;
+}
+
+/* Task list */
+#tasksList {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 8px;
+  max-height: 260px;
+  overflow-y: auto;
+}
+
+/* Task item layout */
+.task-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.15);
+}
+
+/* Task content: checkbox + text inline */
+.task-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-grow: 1;
+  overflow-wrap: anywhere;
+}
+
+/* Task text with smooth color transition */
+.task-text {
+  font-size: 1em;
+  color: inherit;
+  transition: color 0.35s ease;
+}
+
+/* Checked task style */
+.checked {
+  color: rgba(255,255,255,0.7);
+  text-decoration: line-through;
+}
+
+/* Buttons container aligned */
+.task-actions {
+  display: flex;
+  gap: 12px;
+  margin-left: 12px;
+  flex-shrink: 0;
+}
+
+/* Action buttons base */
+.action-btn {
+  background: none;
+  border: none;
+  font-size: 1em;
+  cursor: pointer;
+  padding: 6px 14px;
+  border-radius: 24px;
+  transition: background 0.25s ease, color 0.25s ease;
+  font-weight: 600;
+  user-select: none;
+  white-space: nowrap;
+  box-shadow:
+    2px 2px 4px rgba(0,0,0,0.08),
+    -2px -2px 4px rgba(214, 95, 95, 0.7);
+}
+
+/* Work mode action buttons */
+.action-btn.work-btn {
+  background: linear-gradient(145deg, #cc6464, #da6060);
+  color: #b6abab;
+  border: 1px solid #4a1c1c;
+  box-shadow:
+    2px 2px 5px #e96969,
+    -2px -2px 5px #d46969;
+}
+
+.action-btn.work-btn:hover {
+  background: linear-gradient(145deg, #d48282, #c27878);
+  color: #601f1f;
+  box-shadow:
+    1px 1px 4px #a46464,
+    -1px -1px 4px #e98181;
+}
+
+.action-btn.work-btn:active {
+  transform: translateY(3px);
+  box-shadow:
+    inset 2px 2px 4px #a45454,
+    inset -2px -2px 4px #b45d5d;
+  color: #500d0d;
+}
+
+/* Break mode action buttons */
+.action-btn.break-btn {
+  background: linear-gradient(145deg, #7294d8, #5292e6);
+  color: #255b9d;
+  border: 1px solid #3d5d99;
+  box-shadow:
+    2px 2px 5px #749dd3,
+    -2px -2px 5px #638aac;
+}
+
+.action-btn.break-btn:hover {
+  background: linear-gradient(145deg, #7aa7cc, #6087b8);
+  color: #1c4476;
+  box-shadow:
+    1px 1px 4px #5a87c4,
+    -1px -1px 4px #71a3c7;
+}
+
+.action-btn.break-btn:active {
+  transform: translateY(3px);
+  box-shadow:
+    inset 2px 2px 4px #5279b5,
+    inset -2px -2px 4px #7a9bbe;
+  color: #153459;
+}
+
+/* Checkbox styling */
+.task-content input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: currentColor;
+  transition: accent-color 0.35s ease;
+}
+
+/* Checkbox color tweaks for modes */
+body.work-bg .task-content input[type="checkbox"] {
+  accent-color: #cc6464;
+}
+
+body.break-bg .task-content input[type="checkbox"] {
+  accent-color: #5292e6;
+}
+
+/* Dialog backdrop */
+.dialog-backdrop {
+  display: none;
+  position: fixed;
+  left: 0; top: 0;
+  width: 100vw; height: 100vh;
+  background: rgba(255, 255, 255, 0.404);
+  z-index: 999;
+  transition: background-color 0.35s;
+}
+
+/* Dialog base style */
+.dialog {
+  display: none;
+  position: fixed;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%) scale(0.9);
+  opacity: 0;
+  padding: 24px;
+  background: #8e9fbb; /* neutral light blue-gray */
+  color: #333;
+  border-radius: 24px;
+  box-shadow: 8px 8px 32px rgba(150, 160, 190, 0.7);
+  z-index: 1000;
+  min-width: 260px;
+  transition: opacity 0.35s cubic-bezier(.4,0,.2,1), transform 0.4s cubic-bezier(.4,0,.2,1), background-color 0.35s;
+}
+
+.dialog.show {
+  display: block;
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+/* Dialog heading */
+.dialog h3 {
+  margin: 0 0 18px;
+}
+
+/* Dialog label/input styling */
+.dialog label {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 1em;
+}
+
+.dialog input {
+  width: 55px;
+  margin-left: 12px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  border: 1px solid #c08f8f;
+  background: #9eb9e0;
+  color: #222;
+  transition: background-color 0.35s;
+}
+
+/* Dialog buttons container */
+.dialog-buttons {
+  display: flex;
+  gap: 15px;
+  margin-top: 18px;
+  justify-content: flex-end;
+}
+
+/* Dialog "Save" button */
+.dialog-buttons button {
+  background: linear-gradient(145deg, #4a90e2, #357abd);
+  color: rgb(230, 230, 230);
+  box-shadow:
+    4px 4px 8px #2a5ca8,
+    -4px -4px 6px #5fa5ff;
+  border-radius: 8px;
+  border: none;
+  padding: 7px 18px;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+/* Dialog "Cancel" button */
+.dialog-buttons button:last-child {
+  background: linear-gradient(145deg, #e95353, #bb2a2a);
+  box-shadow:
+    4px 4px 8px #7a2222,
+    -4px -4px 6px #f35d5d;
+}
+
+/* Dialog buttons hover and active */
+.dialog-buttons button:hover {
+  filter: brightness(1.1);
+}
+
+.dialog-buttons button:active {
+  transform: translateY(2px);
+  filter: brightness(0.9);
+}
+
+
+/* Gravity Toggle Button */
+#gravityToggle {
+  appearance: none;
+  -webkit-appearance: none;
+  background: #db6565;
+  border-radius: 12px;
+  position: relative;
+  outline: none;
+  transition: background 0.3s;
+  box-shadow: inset 1px 1px 3px rgba(0,0,0,0.2);
+}
+
+#gravityToggle:checked {
+  background: #4a90e2;
+}
+
+#gravityToggle::before {
+  content: '';
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: white;
+  top: 1px;
+  left: 2px;
+  transition: transform 0.3s;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
+#gravityToggle:checked::before {
+  transform: translateX(20px);
+}
