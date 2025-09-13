@@ -1,9 +1,10 @@
-// Initial values
+// Initial settings
 let workDuration = 25, shortBreak = 5, longBreak = 15, intervals = 4;
-let timer = workDuration * 60;
+let timer = workDuration * 60; // timer always in seconds
 let state = 'work'; // can be 'work', 'short', 'long'
 let pomodoros = 0;
 let timerInterval = null;
+let timerEndTimestamp = null;
 
 // DOM elements
 const body = document.body;
@@ -23,7 +24,6 @@ const stats = {
   pomodoro: document.getElementById('pomodoroCount')
 };
 
-// Buttons and stats for toggling classes
 const controlButtons = [startBtn, stopBtn, skipBtn, editBtn, addTaskBtn];
 const statBoxes = [
   stats.work.parentElement,
@@ -32,53 +32,48 @@ const statBoxes = [
   stats.pomodoro.parentElement
 ];
 
-// Tasks section container and action buttons will be updated dynamically
 const tasksSection = document.querySelector('.tasks-section');
 const tasksList = document.getElementById('tasksList');
 let tasks = [];
 
+// Format: mm:ss
 function pad(n) {
   return n < 10 ? '0' + n : n;
 }
 
 function renderTimer() {
-  timerText.textContent = `${pad(Math.floor(timer / 60))}:${pad(timer % 60)}`;
+  const min = Math.floor(timer / 60);
+  const sec = timer % 60;
+  const text = `${pad(min)}:${pad(sec)}`;
+  timerText.textContent = text;
   stats.pomodoro.textContent = pomodoros;
+  document.title = `${text} − ${state === 'work' ? 'Work' : (state === 'short' ? 'Short Break' : 'Long Break')} | Pomodoro`;
 }
 
 function updateHueClasses(isWork) {
-  // Toggle body class
   body.classList.toggle('work-bg', isWork);
   body.classList.toggle('break-bg', !isWork);
 
-  // Timer box classes
   timerBox.className = isWork ? 'red-bg' : 'blue-bg';
 
-  // Control buttons
   controlButtons.forEach(btn => {
     btn.classList.toggle('work-btn', isWork);
     btn.classList.toggle('break-btn', !isWork);
   });
 
-  // Stats boxes
   statBoxes.forEach(box => {
     box.classList.toggle('work-color', isWork);
     box.classList.toggle('break-color', !isWork);
   });
 
-  // Tasks section container
   tasksSection.classList.toggle('work-task', isWork);
   tasksSection.classList.toggle('break-task', !isWork);
 
-  // Update all action buttons inside tasks to have work/break classes
   document.querySelectorAll('.action-btn').forEach(btn => {
     btn.classList.toggle('work-btn', isWork);
     btn.classList.toggle('break-btn', !isWork);
   });
 
-  // No need to update checkbox accent-color because it is handled by CSS based on body classes
-
-  // Timer label text update
   if (isWork) {
     timerLabel.textContent = 'Work Time';
   } else {
@@ -94,11 +89,17 @@ function updateTheme() {
 
 function startTimer() {
   if (timerInterval) return; // prevent multiple intervals
+  // set timestamp for when this session should end
+  timerEndTimestamp = Date.now() + timer * 1000;
+
   timerInterval = setInterval(() => {
-    if (timer > 0) {
-      timer--;
+    // recalculate timer from exact elapsed wall time
+    const secondsLeft = Math.max(0, Math.ceil((timerEndTimestamp - Date.now()) / 1000));
+    if (secondsLeft !== timer) {
+      timer = secondsLeft;
       renderTimer();
-    } else {
+    }
+    if (timer <= 0) {
       nextStage();
     }
   }, 1000);
@@ -107,9 +108,13 @@ function startTimer() {
 function stopTimer() {
   if (timerInterval) clearInterval(timerInterval);
   timerInterval = null;
+  timerEndTimestamp = null;
+  renderTimer();
 }
 
+// Move to next session (work/break/long break as appropriate)
 function nextStage() {
+  stopTimer();
   if (state === 'work') {
     pomodoros += 1;
     stats.pomodoro.textContent = pomodoros;
@@ -125,9 +130,10 @@ function nextStage() {
     timer = workDuration * 60;
   }
   updateTheme();
-  stopTimer(); // stop timer on session end
+  renderTimer();
 }
 
+// Fun toast for skipping lazily
 function showLazyNotification() {
   const toast = document.createElement('div');
   toast.style.position = 'fixed';
@@ -165,7 +171,7 @@ function showLazyNotification() {
   }, 3500);
 }
 
-// Button event handlers
+// Button events
 startBtn.onclick = () => startTimer();
 stopBtn.onclick = () => stopTimer();
 
@@ -266,7 +272,7 @@ function renderTasks() {
       renderTasks();
     };
 
-    // Add color classes on buttons for current state
+    // Add color classes for current state
     editBtn.classList.toggle('work-btn', state === 'work');
     editBtn.classList.toggle('break-btn', state !== 'work');
     deleteBtn.classList.toggle('work-btn', state === 'work');
@@ -280,7 +286,7 @@ function renderTasks() {
 
     tasksList.appendChild(li);
   });
-}
+};
 
 addTaskBtn.onclick = function () {
   const text = prompt('Task to do:');
@@ -293,3 +299,8 @@ addTaskBtn.onclick = function () {
 // Initialize theme and tasks on load
 updateTheme();
 renderTasks();
+
+// If browser/tab regains visibility, re-sync timer display from calculation.
+document.addEventListener('visibilitychange', () => {
+  renderTimer();
+});
