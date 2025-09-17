@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Markdown Viewer</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/3.0.1/github-markdown.min.css" />
+  <style>
+    body {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <article id="content" class="markdown-body"></article>
+
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script>
+    fetch('markdowntest.md')
+      .then(response => response.text())
+      .then(mdText => {
+        document.getElementById('content').innerHTML = marked.parse(mdText);
+      })
+      .catch(() => {
+        document.getElementById('content').innerHTML = '<p>Could not load the markdown file.</p>';
+      });
+  </script>
+</body>
+</html>
