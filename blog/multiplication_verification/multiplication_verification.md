@@ -153,7 +153,7 @@ This is a consequence of how modulo arithmetic works:
 
 # try it yourself!
 
-Multiply the two numbers below. When you’ve got your answer, I've given the answer beforehand, all you have to do is check wether it's right or not!
+Multiply the two numbers below. I've given the answer beforehand, all you have to do is check wether it's right or not!
 
 **Multiply these:**
 
