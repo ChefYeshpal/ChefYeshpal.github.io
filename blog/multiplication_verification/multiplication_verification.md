@@ -16,7 +16,7 @@ and went into your first panic attack. Well, dont worry anymore, because I've ba
 
 # An Example...
 
-I give to you, a method on veryfying this very multiplication, to know if it is correct or not, so let's first break the rows and all down in this a bit, something like this:
+I give to you, a method on verify this very multiplication, to know if it is correct or not, so let's first break the rows and all down in this a bit, something like this:
 <figure style="text-align: center;">
   <img src="2.png" alt="Giving numbers to the lines" width="256" height="256" style="image-rendering: pixelated;">
 </figure>
@@ -153,13 +153,13 @@ This is a consequence of how modulo arithmetic works:
 
 # try it yourself!
 
-Multiply the two numbers below. When you’ve got your answer, click on the “???” to reveal the correct product and check if you were right!
+Multiply the two numbers below. When you’ve got your answer, I've given the answer beforehand, all you have to do is check wether it's right or not!
 
 **Multiply these:**
 
 - Number 1: 2234 
 - Number 2: 435
-- Answer: 971790
+- Answer: 971793
 
 Try to verify it, see if it works and celebrate with a little toffee!
 
