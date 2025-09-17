@@ -157,35 +157,8 @@ Multiply the two numbers below. When you’ve got your answer, click on the “?
 
 **Multiply these:**
 
-- Number 1: <span id="num1"></span>  
-- Number 2: <span id="num2"></span>  
+- Number 1: 2234 
+- Number 2: 435
+- Answer: 971790
 
-**Your answer =** <span id="product" style="user-select:none; color:#ccc; cursor:pointer;" title="Click to reveal answer">???</span>
-
----
-
-<script>
-  // Generate random Number 1: 3-digit (100-999)
-  const num1 = Math.floor(Math.random() * 900) + 100;
-
-  // Generate random Number 2: either 3-digit or 4-digit (random choice)
-  const num2 = Math.random() < 0.5 
-    ? Math.floor(Math.random() * 900) + 100  // 3-digit
-    : Math.floor(Math.random() * 9000) + 1000; // 4-digit
-
-  // Calculate product
-  const product = num1 * num2;
-
-  // Show numbers
-  document.getElementById('num1').textContent = num1;
-  document.getElementById('num2').textContent = num2;
-
-  // Click to reveal product
-  const productSpan = document.getElementById('product');
-  productSpan.onclick = function() {
-    this.textContent = product;
-    this.style.color = 'black';
-    this.style.userSelect = 'text';
-    this.title = 'Answer revealed';
-  };
-</script>
+Try to verify it, see if it works and comment!
