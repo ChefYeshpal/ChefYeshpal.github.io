@@ -163,6 +163,8 @@ Multiply the two numbers below. I've given the answer beforehand, all you have t
 
 Try to verify it, see if it works and celebrate with a little toffee!
 
+---
+
 ## TL;DR
 
 The trick works because of *casting out nines* (digital roots). By reducing numbers to their single form (mod 9), you can check if a multiplication is likely correct:
