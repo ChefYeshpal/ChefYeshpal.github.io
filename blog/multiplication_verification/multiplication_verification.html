@@ -2,14 +2,119 @@
 <html>
 <head>
   <meta charset="UTF-8" />
-  <title>Digit root methods...</title>
+  <title>Digit Root Methods...</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/3.0.1/github-markdown.min.css" />
-  <link rel="icon" type="image/png" href="../../images/lildemonsprite.png">
+  <link rel="icon" type="image/png" href="../../images/lildemonsprite.png" />
   <style>
     body {
       max-width: 800px;
       margin: 2rem auto;
       padding: 1rem;
+      position: relative;
+      font-family: Arial, sans-serif;
+    }
+    #toc {
+      position: fixed;
+      top: 2rem;
+      right: 2rem;
+      width: 180px;
+      max-height: 80vh;
+      overflow-y: auto;
+      padding: 0.5rem 0.75rem 0.75rem 0.75rem;
+      border: 1px solid #ddd;
+      background-color: #f9f9f9;
+      font-size: 0.85rem;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      z-index: 1000;
+      transition: width 0.3s ease;
+    }
+    #toc.collapsed {
+      width: 2.5rem;
+      overflow-y: visible;
+      padding-bottom: 0.25rem;
+    }
+
+    #toc h2 {
+      font-size: 1rem;
+      margin: 0.25rem 0 0.75rem;
+      font-weight: bold;
+      display: inline-block;
+    }
+
+    /* Hide "Contents" text when collapsed */
+    #toc-title-text {
+      vertical-align: middle;
+    }
+    #toc.collapsed #toc-title-text {
+      display: none;
+    }
+
+    #toc-list {
+      margin: 0;
+      padding-left: 0;
+      list-style: none;
+      max-height: 72vh;
+      overflow-y: auto;
+    }
+
+    #toc.collapsed #toc-list {
+      display: none;
+    }
+
+    #toc-list li {
+      margin-bottom: 0.25rem;
+    }
+
+    #toc-list a {
+      color: #0366d6;
+      text-decoration: none;
+      display: block;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    #toc-list a:hover {
+      text-decoration: underline;
+    }
+
+    /* Toggle button styles */
+    #toc-toggle {
+      cursor: pointer;
+      user-select: none;
+      font-weight: bold;
+      font-size: 1.2rem;
+      line-height: 1;
+      border: none;
+      background: none;
+      color: #333;
+      float: right;
+      margin-top: 0.1rem;
+      padding: 0 0.5rem 0 0;
+      transition: transform 0.3s ease;
+      position: relative;
+    }
+
+    /* Show > when expanded */
+    #toc-toggle::before {
+      content: ">";
+      display: inline-block;
+      transform: none;
+    }
+
+    /* When collapsed: show < instead */
+    #toc.collapsed #toc-toggle {
+      transform: rotate(0deg);
+    }
+
+    #toc.collapsed #toc-toggle::before {
+      content: "<";
+      transform: none !important;
+    }
+
+    /* Hide original button text (if any) */
+    #toc-toggle > * {
+      display: none;
     }
   </style>
 
@@ -17,16 +122,61 @@
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" defer></script>
 </head>
 <body>
+  <div id="toc">
+    <h2>
+      <span id="toc-title-text">Contents</span>
+      <button id="toc-toggle" aria-label="Toggle Table of Contents" title="Toggle Table of Contents">&gt;</button>
+    </h2>
+    <nav>
+      <ul id="toc-list"></ul>
+    </nav>
+  </div>
+
   <article id="content" class="markdown-body"></article>
 
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <script>
+    function slugify(text) {
+      return text.toString().toLowerCase().trim()
+        .replace(/[\s]+/g, '-')       // Replace spaces with -
+        .replace(/[^\w-]+/g, '')      // Remove all non-word chars
+        .replace(/--+/g, '-')         // Replace multiple - with single -
+        .replace(/^-+/, '')           // Trim - from start
+        .replace(/-+$/, '');          // Trim - from end
+    }
+
     fetch('multiplication_verification.md')
       .then(response => response.text())
       .then(mdText => {
-        document.getElementById('content').innerHTML = marked.parse(mdText);
+        const content = document.getElementById('content');
+        content.innerHTML = marked.parse(mdText);
 
-        // After markdown is rendered, tell MathJax to process the page
+        // Collect all headings in order as flat list (no nesting)
+        const headings = [];
+        content.querySelectorAll('h1, h2, h3, h4, h5, h6').forEach(heading => {
+          const text = heading.textContent.trim();
+          const id = slugify(text);
+
+          if (!heading.id) {
+            heading.id = id;
+          }
+          headings.push({ text, id });
+        });
+
+        // Build flat TOC list
+        const tocList = document.getElementById('toc-list');
+        tocList.innerHTML = headings
+          .map(({ text, id }) => `<li><a href="#${id}">${text}</a></li>`)
+          .join('');
+
+        // TOC toggle button logic
+        const toc = document.getElementById('toc');
+        const toggleBtn = document.getElementById('toc-toggle');
+        toggleBtn.addEventListener('click', () => {
+          toc.classList.toggle('collapsed');
+        });
+
+        // After markdown parsed, run MathJax typeset
         if (window.MathJax) {
           MathJax.typesetPromise();
         }

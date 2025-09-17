@@ -5,7 +5,7 @@ So, you may have one day multiplied a few numbers in your 3rd grade, let's say 5
 Well, it probably went something like this, right?
 
 <figure style="text-align: center;">
-  <img src="1.png" alt="alt text" width="256" height="256" style="image-rendering: pixelated;">
+  <img src="1.png" alt="Very boring multiplication" width="256" height="256" style="image-rendering: pixelated;">
   <figcaption>How you'd normally do it...</figcaption>
 </figure>
 
@@ -18,7 +18,7 @@ and went into your first panic attack. Well, dont worry anymore, because I've ba
 
 I give to you, a method on veryfying this very multiplication, to know if it is correct or not, so let's first break the rows and all down in this a bit, something like this:
 <figure style="text-align: center;">
-  <img src="2.png" alt="alt text" width="256" height="256" style="image-rendering: pixelated;">
+  <img src="2.png" alt="Giving numbers to the lines" width="256" height="256" style="image-rendering: pixelated;">
 </figure>
 So what've we done here? well, just given each line a number. And now the magic happens...
 
@@ -65,8 +65,8 @@ The trick you just saw is actually a classic method known as *casting out nines*
 Every number can be reduced to a single digit by adding all its digits together, and if the result has more than one digit, you add those digits again. You repeat this until only one digit remains. This final single digit is called the **digital root**.
 
 For example:
-- The digital root of 52 is \(5 + 2 = 7\).
-- The digital root of 12 is \(1 + 2 = 3\).
+- The digital root of 52 is 5 + 2 = 7.
+- The digital root of 12 is 1 + 2 = 3.
 
 This digital root is special because it represents the original number’s remainder when divided by 9. We say:
 $$
@@ -161,4 +161,12 @@ Multiply the two numbers below. When you’ve got your answer, click on the “?
 - Number 2: 435
 - Answer: 971790
 
-Try to verify it, see if it works and comment!
+Try to verify it, see if it works and celebrate with a little toffee!
+
+## TL;DR
+
+The trick works because of *casting out nines* (digital roots). By reducing numbers to their single form (mod 9), you can check if a multiplication is likely correct:
+- Find the digital root of each number, multiply them, then reduce to a single digit.
+- Compare this with the digital root of your final answer.
+- If they match, then your answer is *probably* right. If not, it's definately wrong.
+**But beware: two different numbers can share the same digital root, so this method is only a quick error check, not proof**
