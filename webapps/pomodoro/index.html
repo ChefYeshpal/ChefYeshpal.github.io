@@ -8,8 +8,10 @@
   <link rel="icon" type="image/png" href="piko.png">
 </head>
 <body>
+  <div id="timerProgressBar" style="position:fixed;top:0;left:0;width:100vw;height:18px;z-index:1500;overflow:hidden;">
+    <div id="timerBarFill" style="height:100%;width:100%;background:#e57373;transition:width 1s linear;float:right;"></div>
+  </div>
   <main>
-
     <div class="timer-section">
       <div id="timer-box" class="red-bg">
         <span id="timer-label">Work Time</span>
@@ -31,7 +33,7 @@
     <section class="tasks-section">
       <h2>Tasks:</h2>
       <ul id="tasksList"></ul>
-      <button id="addTaskBtn">Add a Task</button>
+      <button id="addTaskBtn">Add Task</button>
     </section>
     <!-- Dialog for settings -->
     <div class="dialog-backdrop" id="dialogBackdrop"></div>

@@ -1,8 +1,8 @@
 // Initial settings
 let workDuration = 25, shortBreak = 5, longBreak = 15, intervals = 4;
-let timer = workDuration * 60; // timer always in seconds
+let timer = workDuration * 60; // so that the timer is always in seconds
 let state = 'work'; // can be 'work', 'short', 'long'
-let pomodoros = 0;
+let pomodoros = 0; // initial nos will be 0
 let timerInterval = null;
 let timerEndTimestamp = null;
 
@@ -36,10 +36,16 @@ const tasksSection = document.querySelector('.tasks-section');
 const tasksList = document.getElementById('tasksList');
 let tasks = [];
 
-// Format: mm:ss
+
+// Progress bar elements
+const timerProgressBar = document.getElementById('timerProgressBar');
+const timerBarFill = document.getElementById('timerBarFill');
+
+// Format of mm:ss
 function pad(n) {
   return n < 10 ? '0' + n : n;
 }
+
 
 function renderTimer() {
   const min = Math.floor(timer / 60);
@@ -48,6 +54,16 @@ function renderTimer() {
   timerText.textContent = text;
   stats.pomodoro.textContent = pomodoros;
   document.title = `${text} − ${state === 'work' ? 'Work' : (state === 'short' ? 'Short Break' : 'Long Break')} | Pomodoro`;
+
+  // Progress bar logic (left to right)
+  let total;
+  if (state === 'work') total = workDuration * 60;
+  else if (state === 'short') total = shortBreak * 60;
+  else total = longBreak * 60;
+  const percent = Math.max(0, Math.min(100, (timer / total) * 100));
+  timerBarFill.style.width = percent + '%';
+  timerBarFill.style.background = (state === 'work') ? '#e57373' : '#65a2ff';
+  timerProgressBar.style.background = 'rgba(0,0,0,0.08)';
 }
 
 function updateHueClasses(isWork) {
@@ -112,9 +128,30 @@ function stopTimer() {
   renderTimer();
 }
 
-// Move to next session (work/break/long break as appropriate)
+// Send browser notification, will need to ask for permission
+// Check if there is a way to bypass that permission, can't be that hard no?
+function sendSessionNotification() {
+  if ("Notification" in window) {
+    if (Notification.permission === "granted") {
+      const msg = (state === 'work') ? 'Break time!' : 'Work time!';
+      new Notification(msg, {
+        icon: 'piko.png',
+        body: (state === 'work') ? 'Now I want you to take a well deserved break!' : 'Back to work chum!'
+      });
+    } else if (Notification.permission !== "denied") {
+      Notification.requestPermission().then(permission => {
+        if (permission === "granted") {
+          sendSessionNotification();
+        }
+      });
+    }
+  }
+}
+
+// Move to next session (work/break/long break as in order)
 function nextStage() {
   stopTimer();
+  sendSessionNotification();
   if (state === 'work') {
     pomodoros += 1;
     stats.pomodoro.textContent = pomodoros;
@@ -207,7 +244,8 @@ function closeDialog() {
   }, 400);
 }
 
-document.getElementById('dialogSave').onclick = function () {
+// For default values in dialog settings
+function saveDialogSettings() {
   workDuration = Math.max(1, parseInt(workInput.value) || 25);
   shortBreak = Math.max(1, parseInt(shortInput.value) || 5);
   longBreak = Math.max(5, parseInt(longInput.value) || 15);
@@ -219,7 +257,17 @@ document.getElementById('dialogSave').onclick = function () {
   timer = (state === 'work' ? workDuration : (state === 'short' ? shortBreak : longBreak)) * 60;
   updateTheme();
   closeDialog();
-};
+}
+
+document.getElementById('dialogSave').onclick = saveDialogSettings;
+
+// Allow Enter key to save in dialog
+sessionDialog.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    saveDialogSettings();
+  }
+});
 
 document.getElementById('dialogCancel').onclick = closeDialog;
 editBtn.onclick = showDialog;
