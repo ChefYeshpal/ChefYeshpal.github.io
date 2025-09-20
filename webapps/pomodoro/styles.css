@@ -444,11 +444,16 @@ body.break-bg .task-content input[type="checkbox"] {
 }
 
 /* Dialog "Cancel" button */
-.dialog-buttons button:last-child {
+#dialogCancel {
   background: linear-gradient(145deg, #e95353, #bb2a2a);
   box-shadow:
     4px 4px 8px #7a2222,
     -4px -4px 6px #f35d5d;
+}
+
+#dialogReset {
+    background: linear-gradient(145deg, #f0ad4e, #d99a3e);
+    box-shadow: 4px 4px 8px #8c6427, -4px -4px 6px #ffc675;
 }
 
 /* Dialog buttons hover and active */
@@ -493,4 +498,103 @@ body.break-bg .task-content input[type="checkbox"] {
 
 #gravityToggle:checked::before {
   transform: translateX(20px);
+}
+
+/* Stats Modal */
+.stats-modal-backdrop {
+  display: none;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1999;
+  justify-content: center;
+  align-items: center;
+}
+
+.stats-modal-content {
+  background: #f0f0f0;
+  color: #333;
+  border-radius: 16px;
+  padding: 20px;
+  width: 90%;
+  max-width: 800px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+  position: relative;
+}
+
+.stats-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 10px;
+}
+
+.stats-modal-header h3 {
+  margin: 0;
+  font-size: 1.4em;
+}
+
+.stats-modal-close {
+  font-size: 2em;
+  font-weight: bold;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.stats-chart-container {
+  display: grid;
+  /* A column for labels and a column for the graph */
+  grid-template-columns: 100px 1fr; 
+  grid-template-rows: repeat(3, 1fr) 20px; /* 3 rows for data, 1 for x-axis labels */
+  height: 220px;
+  background: #fff;
+  border-radius: 8px;
+  padding: 10px;
+}
+
+.chart-y-label {
+  grid-column: 1;
+  font-size: 12px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 10px;
+  border-right: 1px solid #eee;
+  color: #555;
+}
+
+.chart-row {
+  grid-column: 2;
+  position: relative;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.chart-row:last-of-type {
+  border-bottom: none;
+}
+
+.chart-bar {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 25px; /* Make bars thicker */
+  border-radius: 4px;
+  opacity: 0.85;
+}
+
+.chart-labels-x {
+  grid-column: 2;
+  grid-row: 4;
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  color: #888;
+  padding-top: 5px;
 }
