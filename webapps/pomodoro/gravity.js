@@ -60,17 +60,20 @@ function animateGravity() {
   fallingElements.forEach(item => {
     if (!item.dragging) {
       if (item.y < item.bottomLimit) {
-        item.vy += 1.5;
+        item.vy += 0.6; // Softer gravity
         item.y += item.vy;
-        if (item.y > item.bottomLimit) {
+        if (item.y >= item.bottomLimit) {
           item.y = item.bottomLimit;
-          item.vy = -item.vy * 0.6;
-          if (Math.abs(item.vy) < 0.5) {
+          item.vy *= -0.5; // Reduced bounce
+          if (Math.abs(item.vy) < 1) {
             item.vy = 0;
           }
         }
-        item.el.style.top = item.y + 'px';
+      } else if (item.vy !== 0) {
+        item.y = item.bottomLimit;
+        item.vy = 0;
       }
+      item.el.style.top = item.y + 'px';
     }
   });
 }
@@ -79,18 +82,25 @@ function disableGravity() {
   cancelAnimationFrame(animationId);
   animationId = null;
 
-  const duration = 700;
+  const duration = 800; // Slightly longer for a smoother feel
   const startTime = performance.now();
+
+  // Store the starting position for the float back animation
+  fallingElements.forEach(item => {
+      item.floatStartX = parseFloat(item.el.style.left);
+      item.floatStartY = parseFloat(item.el.style.top);
+  });
 
   function floatBack(timestamp) {
     let elapsed = timestamp - startTime;
     let progress = Math.min(elapsed / duration, 1);
+    // Use a cubic ease-out function for a very smooth stop
+    progress = 1 - Math.pow(1 - progress, 3);
 
     fallingElements.forEach(item => {
-      let currentX = parseFloat(item.el.style.left);
-      let currentY = parseFloat(item.el.style.top);
-      const newX = currentX + (item.origX - currentX) * progress;
-      const newY = currentY + (item.origY - currentY) * progress;
+      // Interpolate from the stored "fallen" position to the original position
+      const newX = item.floatStartX + (item.origX - item.floatStartX) * progress;
+      const newY = item.floatStartY + (item.origY - item.floatStartY) * progress;
       item.el.style.left = newX + 'px';
       item.el.style.top = newY + 'px';
     });
@@ -98,10 +108,21 @@ function disableGravity() {
     if (progress < 1) {
       requestAnimationFrame(floatBack);
     } else {
+      // Reset all styles only after the animation is fully complete
       fallingElements.forEach(item => {
-        item.el.style.position = "";
-        item.el.style.top = "";
-        item.el.style.left = "";
+        // For the fixed buttons, restore their fixed position. For others, clear the styles.
+        if (item.el.id === 'gravityToggleWrapper' || item.el.id === 'statsBtn' || item.el.id === 'utcAnalogClock') {
+            item.el.style.position = "fixed";
+            item.el.style.top = item.origY + 'px';
+            item.el.style.left = item.origX + 'px';
+            // We don't need to restore right/bottom because origX/origY already captures the rendered position
+        } else {
+            item.el.style.position = "";
+            item.el.style.top = "";
+            item.el.style.left = "";
+        }
+        
+        // Clear styles that were added for the effect
         item.el.style.width = "";
         item.el.style.margin = "";
         item.el.style.zIndex = "";
