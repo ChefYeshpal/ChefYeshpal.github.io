@@ -44,9 +44,22 @@
       <label>Long Break (min): <input type="number" id="longInput" min="5" max="60"></label>
       <label>Pomodoros until long break: <input type="number" id="intervalInput" min="1" max="12"></label>
       <div class="dialog-buttons">
+        <button id="dialogReset">Reset</button>
         <button id="dialogSave">Save</button>
         <button id="dialogCancel">Cancel</button>
       </div>
+    </div>
+    <div id="statsBtn" style="position: fixed; top: 20px; right: 12px; z-index: 2000; cursor: pointer; background: rgb(207, 207, 207); padding: 8px 12px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.25); font-family: sans-serif; font-size: 12px; color: #333; border: 1px solid #ccc;">
+        📊 Stats
+    </div>
+    <div id="statsModal" class="stats-modal-backdrop">
+        <div class="stats-modal-content">
+            <div class="stats-modal-header">
+                <h3>Today's Activity</h3>
+                <span id="closeStatsModal" class="stats-modal-close">&times;</span>
+            </div>
+            <div id="statsChart" class="stats-chart-container"></div>
+        </div>
     </div>
     <div id="gravityToggleWrapper" style="position: fixed; bottom: 12px; right: 12px; z-index: 1200;">
         <input type="checkbox" id="gravityToggle" style="width: 40px; height: 20px; cursor: pointer;">
