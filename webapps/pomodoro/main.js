@@ -3,6 +3,10 @@ let workDuration = 25, shortBreak = 5, longBreak = 15, intervals = 4;
 let timer = workDuration * 60; // so that the timer is always in seconds
 let state = 'work'; // can be 'work', 'short', 'long'
 let pomodoros = 0; // initial nos will be 0
+let skippedPomodoros = 0;
+let totalWorkTime = 0;
+let totalShortBreakTime = 0;
+let totalLongBreakTime = 0;
 let timerInterval = null;
 let timerEndTimestamp = null;
 
@@ -104,28 +108,29 @@ function updateTheme() {
 }
 
 function startTimer() {
-  if (timerInterval) return; // prevent multiple intervals
-  // set timestamp for when this session should end
-  timerEndTimestamp = Date.now() + timer * 1000;
+  if (timerInterval) return;
 
+  timerEndTimestamp = Date.now() + timer * 1000;
   timerInterval = setInterval(() => {
-    // recalculate timer from exact elapsed wall time
-    const secondsLeft = Math.max(0, Math.ceil((timerEndTimestamp - Date.now()) / 1000));
-    if (secondsLeft !== timer) {
-      timer = secondsLeft;
+    timer--;
+    if (timer < 0) {
+      nextStage();
+    } else {
       renderTimer();
     }
-    if (timer <= 0) {
-      nextStage();
-    }
+    saveData(); // Save progress
   }, 1000);
+
+  startBtn.textContent = 'Running...';
+  updateTheme();
 }
 
 function stopTimer() {
-  if (timerInterval) clearInterval(timerInterval);
+  clearInterval(timerInterval);
   timerInterval = null;
-  timerEndTimestamp = null;
-  renderTimer();
+  timerEndTimestamp = null; // Clear timestamp
+  startBtn.textContent = 'Start';
+  saveData(); // Save stopped state
 }
 
 // Send browser notification, will need to ask for permission
@@ -225,6 +230,7 @@ const workInput = document.getElementById('workInput');
 const shortInput = document.getElementById('shortInput');
 const longInput = document.getElementById('longInput');
 const intervalInput = document.getElementById('intervalInput');
+const dialogResetBtn = document.getElementById('dialogReset');
 
 function showDialog() {
   workInput.value = workDuration;
@@ -272,6 +278,18 @@ sessionDialog.addEventListener('keydown', function(e) {
 document.getElementById('dialogCancel').onclick = closeDialog;
 editBtn.onclick = showDialog;
 dialogBackdrop.onclick = closeDialog;
+
+dialogResetBtn.onclick = () => {
+    const isConfirmed = confirm(
+        'Are you sure you want to reset all settings and data?\n\n' +
+        'This will restore default timer durations, clear your tasks, and erase all session history. This action cannot be undone.'
+    );
+
+    if (isConfirmed) {
+        localStorage.removeItem('pomodoroData');
+        location.reload();
+    }
+};
 
 // Task List management
 function renderTasks() {
@@ -344,11 +362,224 @@ addTaskBtn.onclick = function () {
   }
 };
 
+// --- Stats Modal ---
+const statsBtn = document.getElementById('statsBtn');
+const statsModal = document.getElementById('statsModal');
+const closeStatsModal = document.getElementById('closeStatsModal');
+const statsChart = document.getElementById('statsChart');
+
+function renderStatsChart() {
+    statsChart.innerHTML = ''; // Clear previous chart
+
+    const data = JSON.parse(localStorage.getItem('pomodoroData')) || {};
+    const sessions = data.sessions || [];
+
+    const now = new Date();
+    const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+    const totalMinutesInDay = 24 * 60;
+
+    // Define categories and create rows
+    const categories = [
+        { name: 'Work', type: 'work', color: '#e57373' },
+        { name: 'Short Break', type: 'short', color: '#65a2ff' },
+        { name: 'Long Break', type: 'long', color: '#81c784' }
+    ];
+
+    categories.forEach((cat, index) => {
+        // Y-axis Label
+        const yLabel = document.createElement('div');
+        yLabel.className = 'chart-y-label';
+        yLabel.textContent = cat.name;
+        yLabel.style.gridRow = index + 1;
+        statsChart.appendChild(yLabel);
+
+        // Row for bars
+        const row = document.createElement('div');
+        row.className = 'chart-row';
+        row.style.gridRow = index + 1;
+        statsChart.appendChild(row);
+
+        // Filter sessions for this category and create bars
+        sessions
+            .filter(s => s.type === cat.type && s.start >= startOfDay)
+            .forEach(session => {
+                const startMinute = (session.start - startOfDay) / (1000 * 60);
+                const endMinute = (session.end - startOfDay) / (1000 * 60);
+
+                const left = (startMinute / totalMinutesInDay) * 100;
+                const width = ((endMinute - startMinute) / totalMinutesInDay) * 100;
+
+                const bar = document.createElement('div');
+                bar.className = 'chart-bar';
+                bar.style.left = `${left}%`;
+                bar.style.width = `${width}%`;
+                bar.style.background = cat.color;
+                bar.title = `From ${new Date(session.start).toLocaleTimeString()} to ${new Date(session.end).toLocaleTimeString()}`;
+                row.appendChild(bar);
+            });
+    });
+
+    // X-axis labels (time)
+    const xLabels = document.createElement('div');
+    xLabels.className = 'chart-labels-x';
+    for (let i = 0; i <= 24; i += 4) {
+        const label = document.createElement('span');
+        label.textContent = `${i}:00`;
+        xLabels.appendChild(label);
+    }
+    statsChart.appendChild(xLabels);
+}
+
+
+function showStatsModal() {
+    renderStatsChart();
+    statsModal.style.display = 'flex';
+}
+
+function closeStatsModalFunc() {
+    statsModal.style.display = 'none';
+}
+
+statsBtn.onclick = showStatsModal;
+closeStatsModal.onclick = closeStatsModalFunc;
+statsModal.onclick = (e) => {
+    if (e.target === statsModal) {
+        closeStatsModalFunc();
+    }
+};
+
 // Initialize theme and tasks on load
 updateTheme();
 renderTasks();
 
 // If browser/tab regains visibility, re-sync timer display from calculation.
 document.addEventListener('visibilitychange', () => {
-  renderTimer();
+  if (document.hidden || !timerInterval) return;
+
+  const remaining = Math.round((timerEndTimestamp - Date.now()) / 1000);
+  if (remaining > 0) {
+    timer = remaining;
+    renderTimer();
+  } else {
+    timer = 0;
+    renderTimer();
+    nextStage();
+  }
 });
+
+
+// --- Data Persistence using localStorage ---
+
+function saveData() {
+  const data = {
+    workDuration,
+    shortBreak,
+    longBreak,
+    intervals,
+    pomodoros,
+    skippedPomodoros,
+    totalWorkTime,
+    totalShortBreakTime,
+    totalLongBreakTime,
+    tasks,
+    sessions: JSON.parse(localStorage.getItem('pomodoroData') || '{}').sessions || [],
+    timerState: {
+      remaining: timer,
+      state: state,
+      isRunning: timerInterval !== null,
+      endTimestamp: timerEndTimestamp
+    }
+  };
+  localStorage.setItem('pomodoroData', JSON.stringify(data));
+}
+
+function loadData() {
+  const data = JSON.parse(localStorage.getItem('pomodoroData'));
+  if (!data) return;
+
+  workDuration = data.workDuration || 25;
+  shortBreak = data.shortBreak || 5;
+  longBreak = data.longBreak || 15;
+  intervals = data.intervals || 4;
+  pomodoros = data.pomodoros || 0;
+  skippedPomodoros = data.skippedPomodoros || 0;
+  totalWorkTime = data.totalWorkTime || 0;
+  totalShortBreakTime = data.totalShortBreakTime || 0;
+  totalLongBreakTime = data.totalLongBreakTime || 0;
+  tasks = data.tasks || [];
+
+  // Restore timer state
+  if (data.timerState) {
+    state = data.timerState.state || 'work';
+    timer = data.timerState.remaining || workDuration * 60;
+
+    if (data.timerState.isRunning && data.timerState.endTimestamp) {
+      const remaining = Math.round((data.timerState.endTimestamp - Date.now()) / 1000);
+      if (remaining > 0) {
+        timer = remaining;
+        timerEndTimestamp = data.timerState.endTimestamp;
+        startTimer(); // Resume timer
+      } else {
+        // Timer finished while tab was closed
+        timer = 0;
+        nextStage();
+      }
+    }
+  }
+  
+  updateTheme();
+  renderTasks();
+  renderTimer(); // Update display with loaded data
+}
+
+// Load data on initial startup
+loadData();
+
+// Test for seeing if the stats actually work...
+// Generates fake sessions using the current user-configured durations (workDuration, shortBreak, longBreak) and intervals.
+function generateFakeSessions() {
+  const sessions = [];
+  const now = new Date();
+  // Start generating data from 3 hours ago
+  let currentTime = now.getTime() - 3 * 60 * 60 * 1000;
+
+  // Use current configured durations (they are in minutes in the app)
+  const workMs = Math.max(1, workDuration) * 60 * 1000;
+  const shortMs = Math.max(1, shortBreak) * 60 * 1000;
+  const longMs = Math.max(1, longBreak) * 60 * 1000;
+
+  // Number of pomodoro cycles to generate (at least 1)
+  const cycles = Math.max(1, intervals);
+
+  for (let i = 0; i < cycles; i++) {
+    // Work Session
+    let start = currentTime;
+    let end = start + workMs;
+    sessions.push({ type: 'work', start, end });
+    currentTime = end;
+
+    // Break Session: make the last break a long one
+    start = currentTime;
+    if (i === cycles - 1) {
+      end = start + longMs;
+      sessions.push({ type: 'long', start, end });
+    } else {
+      end = start + shortMs;
+      sessions.push({ type: 'short', start, end });
+    }
+    currentTime = end;
+  }
+
+  // Save the fake data to localStorage (preserve other saved fields if present)
+  const data = JSON.parse(localStorage.getItem('pomodoroData')) || {};
+  data.sessions = sessions;
+  localStorage.setItem('pomodoroData', JSON.stringify(data));
+
+  console.log(`✅ Fake session data generated using work=${workDuration}min, short=${shortBreak}min, long=${longBreak}min, cycles=${cycles}`);
+  alert('Fake session data has been generated! Please open the stats modal to see the chart.');
+
+  // Automatically refresh the chart if it's open
+  if (document.getElementById('statsModal').style.display === 'flex') {
+    renderStatsChart();
+  }
+}
