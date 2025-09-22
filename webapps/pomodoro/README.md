@@ -5,6 +5,9 @@ Yeah I had to use co-pilot a little, but it's automatically giving me suggestion
 
 And, in case you haven't noticed... I dont know how to write proper README's. My experience is **very** limited...
 
+url: chefyeshpal.github.io/webapps/pomodoro/index.html 
+(I'm not a master coder or anything, seriously...)
+
 ## Where was AI used?
 
 - I mainly used it for javascript, as my knowledge is rather... bad.
@@ -12,17 +15,19 @@ And, in case you haven't noticed... I dont know how to write proper README's. My
 - No where else really.
 
 The main point of this project was to just test my CSS skills, as it's been some time since I did new things other than just update my own website. Plus, I wanted to try to increase my productivity.
-By the way, this is a little inspired from ```pomofocus.io```, I had been using their website since COVID (2019 hm...) and it's pretty good. I also wanted to include some "insights" or some kind of a similar section in my own website, but I guess it's a little hard to do that cause I have absolutely no clue how to store that data in the "cookies" of the browser and all that... Hopefully I learn it soon enough though :D
+By the way, this is a little inspired from ```pomofocus.io```, I had been using their website since covid-19 (2019 hm...) and it's pretty good. I also wanted to include some "insights" or some kind of a similar section in my own website, but I guess it's a little hard to do that cause I have absolutely no clue how to store that data in the "cookies" of the browser and all that... Hopefully I learn it soon enough though :D
+
+Update: I'm using ai for the stuff I dont understand, which still includes most of js. But I'm trying to ask for snippets of code as "Examples" and trying to integrate them with my actual code
 
 ## Stuff That works here
 
-- Basic timer functionality where it counts down from a user given number to 00:00
+- Basic timer functionality where it counts down from a user given number (in minutes) towards 00:00
 - Timer working accurately even in the background, processes aren't put in inactive mode (can make countdown inaccurate)
 - Colour changes based on mode (work or break)
 - Task's can be created, edited, completed and deleted
 - Number of pomodoro's shown, 1 pomodoro = worktime + breaktime
 - Gravity toggle
-- A clock that shows Union Standard Time (with a little wonkey thing)
+- A clock that shows Union Standard Time (with a little wonkey thing, wait for the second hand to run out)
 
 ## Stuff I wanted to add
 
@@ -65,3 +70,21 @@ By the way, this is a little inspired from ```pomofocus.io```, I had been using 
   - Updated position of stats button
     - It would clip under the progress bar after untoggling the gravity, couldn't figure out how to not get that to happen so just changed the top padding to 20px
     - Wouldn't work if I placed the stat button div above the progress bar in [[index.html]], that's because it'll not be a part of the elements which'll drop when gravity comes...
+  - Stat button seems to work, but seems like it isn't storing the data for the pomodoro's when manually done. I had created a function to test out with pre test data, but seems like I'll need to change and work on it a bit more to figure out where things got wonky. 
+    - Running "generateFakeSessions()" in the console seemed to work, but seems like it doesn't log the time in real time use.
+    - Probably need to do some dialogue or something for localstorage? I dont know what I missed, so It'll take a few hours maybe...
+- 22 September 2025
+  - Moved all the js code for stat's tracking and charting from main.js to stats.js, should make it more organised.
+  - Added debugging tool: window.checkStoredSessions()
+    - Can be used to inspect stored session data
+  - Time tracking works properly now, and shows up on the stats page
+    - Had to add completeCurrentSession() function to properly end sessions
+    - Also improved startSession() to automatically end any existing incomplete session (dunno why I'd need it, but felt like it would help in the long run)
+  - Modified nextStage() funct
+    - Instead of calling stopTimer() which ends the session, I made it directly handle the timer cleanup and call completeCurrentSession()
+    - This should make it properly end the current session (wether it be work or break)
+  - Added console updates to be able to view if console registers sessions starting. Should also help in timekeeping?
+  - Should show start time end time for sessions in the bar graph when mouse is hovering over them
+  - Added filters in stats dialogue, so it should now show hourly, quaterly (6 hours), half-day (12 hours) and full (24 hours) for easier looking into if it's working or not
+    - Also made it so that the bar glows a bit when I hover my mouse over it
+  - Added gray areas to tell what amount of time you have skipped in work and break

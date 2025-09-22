@@ -1,6 +1,9 @@
+// This is the gravity js file, it will only have code relating to the gravity toggle. I dont plan on keeping this (if I continue this project seriously) so I've put it in a different file cause I'll be able to cleanup much easier then
+// ----------- Setting the Variables ----------
 const gravityToggle = document.getElementById('gravityToggle');
 const mainContent = document.querySelector('main');
 
+// ---------- Initial Settings ----------
 let gravityEnabled = false;
 let fallingElements = [];
 let animationId = null;

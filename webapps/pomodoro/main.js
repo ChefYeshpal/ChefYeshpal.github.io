@@ -1,14 +1,22 @@
-// Initial settings
+// This is the main js file, will contain almost all the logic for the webapp other than particular niches.
+// ---------- Initial settings ----------
 let workDuration = 25, shortBreak = 5, longBreak = 15, intervals = 4;
 let timer = workDuration * 60; // so that the timer is always in seconds
 let state = 'work'; // can be 'work', 'short', 'long'
-let pomodoros = 0; // initial nos will be 0
+// For work, break and skips
+let pomodoros = 0;
 let skippedPomodoros = 0;
 let totalWorkTime = 0;
 let totalShortBreakTime = 0;
 let totalLongBreakTime = 0;
 let timerInterval = null;
 let timerEndTimestamp = null;
+
+// ---------- Setting Variables ----------
+window.workDuration = workDuration;
+window.shortBreak = shortBreak;
+window.longBreak = longBreak;
+window.intervals = intervals;
 
 // DOM elements
 const body = document.body;
@@ -28,6 +36,7 @@ const stats = {
   pomodoro: document.getElementById('pomodoroCount')
 };
 
+// Stats modal elements
 const controlButtons = [startBtn, stopBtn, skipBtn, editBtn, addTaskBtn];
 const statBoxes = [
   stats.work.parentElement,
@@ -110,15 +119,22 @@ function updateTheme() {
 function startTimer() {
   if (timerInterval) return;
 
+  // Start session tracking
+  if (window.PomodoroStats) {
+    console.log(`Starting timer for ${state} session`);
+    window.PomodoroStats.startSession(state);
+  }
+
   timerEndTimestamp = Date.now() + timer * 1000;
   timerInterval = setInterval(() => {
     timer--;
     if (timer < 0) {
+      console.log(`Timer completed for ${state} session`);
       nextStage();
     } else {
       renderTimer();
     }
-    saveData(); // Save progress
+    saveAppData(); // Save progress
   }, 1000);
 
   startBtn.textContent = 'Running...';
@@ -126,11 +142,16 @@ function startTimer() {
 }
 
 function stopTimer() {
+  // End session tracking (only if not already handled by skip)
+  if (window.PomodoroStats && window.PomodoroStats.currentTimerSession) {
+    window.PomodoroStats.endSession();
+  }
+
   clearInterval(timerInterval);
   timerInterval = null;
   timerEndTimestamp = null; // Clear timestamp
   startBtn.textContent = 'Start';
-  saveData(); // Save stopped state
+  saveAppData(); // Save stopped state
 }
 
 // Send browser notification, will need to ask for permission
@@ -155,7 +176,17 @@ function sendSessionNotification() {
 
 // Move to next session (work/break/long break as in order)
 function nextStage() {
-  stopTimer();
+  // Complete the current session that just ended
+  if (window.PomodoroStats) {
+    window.PomodoroStats.completeCurrentSession();
+  }
+  
+  clearInterval(timerInterval);
+  timerInterval = null;
+  timerEndTimestamp = null;
+  startBtn.textContent = 'Start';
+  
+  // Multiply each by 60 to convert from minutes to seconds
   sendSessionNotification();
   if (state === 'work') {
     pomodoros += 1;
@@ -173,6 +204,7 @@ function nextStage() {
   }
   updateTheme();
   renderTimer();
+  saveAppData(); // Save the updated state
 }
 
 // Fun toast for skipping lazily
@@ -218,6 +250,11 @@ startBtn.onclick = () => startTimer();
 stopBtn.onclick = () => stopTimer();
 
 skipBtn.onclick = () => {
+  // Record the skip before stopping timer
+  if (window.PomodoroStats && timerInterval) {
+    window.PomodoroStats.skipSession();
+  }
+  
   stopTimer();
   if (state === 'work') showLazyNotification();
   nextStage();
@@ -256,6 +293,13 @@ function saveDialogSettings() {
   shortBreak = Math.max(1, parseInt(shortInput.value) || 5);
   longBreak = Math.max(5, parseInt(longInput.value) || 15);
   intervals = Math.max(1, parseInt(intervalInput.value) || 4);
+  
+  // Update global window variables for stats module
+  window.workDuration = workDuration;
+  window.shortBreak = shortBreak;
+  window.longBreak = longBreak;
+  window.intervals = intervals;
+  
   stats.work.textContent = workDuration;
   stats.short.textContent = shortBreak;
   stats.long.textContent = longBreak;
@@ -362,92 +406,6 @@ addTaskBtn.onclick = function () {
   }
 };
 
-// --- Stats Modal ---
-const statsBtn = document.getElementById('statsBtn');
-const statsModal = document.getElementById('statsModal');
-const closeStatsModal = document.getElementById('closeStatsModal');
-const statsChart = document.getElementById('statsChart');
-
-function renderStatsChart() {
-    statsChart.innerHTML = ''; // Clear previous chart
-
-    const data = JSON.parse(localStorage.getItem('pomodoroData')) || {};
-    const sessions = data.sessions || [];
-
-    const now = new Date();
-    const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
-    const totalMinutesInDay = 24 * 60;
-
-    // Define categories and create rows
-    const categories = [
-        { name: 'Work', type: 'work', color: '#e57373' },
-        { name: 'Short Break', type: 'short', color: '#65a2ff' },
-        { name: 'Long Break', type: 'long', color: '#81c784' }
-    ];
-
-    categories.forEach((cat, index) => {
-        // Y-axis Label
-        const yLabel = document.createElement('div');
-        yLabel.className = 'chart-y-label';
-        yLabel.textContent = cat.name;
-        yLabel.style.gridRow = index + 1;
-        statsChart.appendChild(yLabel);
-
-        // Row for bars
-        const row = document.createElement('div');
-        row.className = 'chart-row';
-        row.style.gridRow = index + 1;
-        statsChart.appendChild(row);
-
-        // Filter sessions for this category and create bars
-        sessions
-            .filter(s => s.type === cat.type && s.start >= startOfDay)
-            .forEach(session => {
-                const startMinute = (session.start - startOfDay) / (1000 * 60);
-                const endMinute = (session.end - startOfDay) / (1000 * 60);
-
-                const left = (startMinute / totalMinutesInDay) * 100;
-                const width = ((endMinute - startMinute) / totalMinutesInDay) * 100;
-
-                const bar = document.createElement('div');
-                bar.className = 'chart-bar';
-                bar.style.left = `${left}%`;
-                bar.style.width = `${width}%`;
-                bar.style.background = cat.color;
-                bar.title = `From ${new Date(session.start).toLocaleTimeString()} to ${new Date(session.end).toLocaleTimeString()}`;
-                row.appendChild(bar);
-            });
-    });
-
-    // X-axis labels (time)
-    const xLabels = document.createElement('div');
-    xLabels.className = 'chart-labels-x';
-    for (let i = 0; i <= 24; i += 4) {
-        const label = document.createElement('span');
-        label.textContent = `${i}:00`;
-        xLabels.appendChild(label);
-    }
-    statsChart.appendChild(xLabels);
-}
-
-
-function showStatsModal() {
-    renderStatsChart();
-    statsModal.style.display = 'flex';
-}
-
-function closeStatsModalFunc() {
-    statsModal.style.display = 'none';
-}
-
-statsBtn.onclick = showStatsModal;
-closeStatsModal.onclick = closeStatsModalFunc;
-statsModal.onclick = (e) => {
-    if (e.target === statsModal) {
-        closeStatsModalFunc();
-    }
-};
-
 // Initialize theme and tasks on load
 updateTheme();
 renderTasks();
@@ -470,43 +428,51 @@ document.addEventListener('visibilitychange', () => {
 
 // --- Data Persistence using localStorage ---
 
-function saveData() {
-  const data = {
-    workDuration,
-    shortBreak,
-    longBreak,
-    intervals,
-    pomodoros,
-    skippedPomodoros,
-    totalWorkTime,
-    totalShortBreakTime,
-    totalLongBreakTime,
-    tasks,
-    sessions: JSON.parse(localStorage.getItem('pomodoroData') || '{}').sessions || [],
-    timerState: {
-      remaining: timer,
-      state: state,
-      isRunning: timerInterval !== null,
-      endTimestamp: timerEndTimestamp
-    }
-  };
-  localStorage.setItem('pomodoroData', JSON.stringify(data));
+// Local save function that uses the stats module
+function saveAppData() {
+  if (window.PomodoroStats) {
+    const appState = {
+      workDuration,
+      shortBreak,
+      longBreak,
+      intervals,
+      pomodoros,
+      skippedPomodoros,
+      totalWorkTime,
+      totalShortBreakTime,
+      totalLongBreakTime,
+      tasks,
+      timer,
+      state,
+      timerInterval,
+      timerEndTimestamp
+    };
+    window.PomodoroStats.saveData(appState);
+  }
 }
 
-function loadData() {
-  const data = JSON.parse(localStorage.getItem('pomodoroData'));
+function loadAppData() {
+  if (!window.PomodoroStats) return;
+  
+  const data = window.PomodoroStats.loadData();
   if (!data) return;
 
-  workDuration = data.workDuration || 25;
-  shortBreak = data.shortBreak || 5;
-  longBreak = data.longBreak || 15;
-  intervals = data.intervals || 4;
-  pomodoros = data.pomodoros || 0;
-  skippedPomodoros = data.skippedPomodoros || 0;
-  totalWorkTime = data.totalWorkTime || 0;
-  totalShortBreakTime = data.totalShortBreakTime || 0;
-  totalLongBreakTime = data.totalLongBreakTime || 0;
-  tasks = data.tasks || [];
+  workDuration = data.workDuration;
+  shortBreak = data.shortBreak;
+  longBreak = data.longBreak;
+  intervals = data.intervals;
+  pomodoros = data.pomodoros;
+  skippedPomodoros = data.skippedPomodoros;
+  totalWorkTime = data.totalWorkTime;
+  totalShortBreakTime = data.totalShortBreakTime;
+  totalLongBreakTime = data.totalLongBreakTime;
+  tasks = data.tasks;
+
+  // Update global window variables
+  window.workDuration = workDuration;
+  window.shortBreak = shortBreak;
+  window.longBreak = longBreak;
+  window.intervals = intervals;
 
   // Restore timer state
   if (data.timerState) {
@@ -533,53 +499,31 @@ function loadData() {
 }
 
 // Load data on initial startup
-loadData();
+loadAppData();
 
-// Test for seeing if the stats actually work...
-// Generates fake sessions using the current user-configured durations (workDuration, shortBreak, longBreak) and intervals.
-function generateFakeSessions() {
-  const sessions = [];
-  const now = new Date();
-  // Start generating data from 3 hours ago
-  let currentTime = now.getTime() - 3 * 60 * 60 * 1000;
-
-  // Use current configured durations (they are in minutes in the app)
-  const workMs = Math.max(1, workDuration) * 60 * 1000;
-  const shortMs = Math.max(1, shortBreak) * 60 * 1000;
-  const longMs = Math.max(1, longBreak) * 60 * 1000;
-
-  // Number of pomodoro cycles to generate (at least 1)
-  const cycles = Math.max(1, intervals);
-
-  for (let i = 0; i < cycles; i++) {
-    // Work Session
-    let start = currentTime;
-    let end = start + workMs;
-    sessions.push({ type: 'work', start, end });
-    currentTime = end;
-
-    // Break Session: make the last break a long one
-    start = currentTime;
-    if (i === cycles - 1) {
-      end = start + longMs;
-      sessions.push({ type: 'long', start, end });
-    } else {
-      end = start + shortMs;
-      sessions.push({ type: 'short', start, end });
-    }
-    currentTime = end;
+// Global functions for debugging/testing
+window.generateFakeSessions = function() {
+  if (window.PomodoroStats) {
+    window.PomodoroStats.generateFakeSessions();
   }
+};
 
-  // Save the fake data to localStorage (preserve other saved fields if present)
-  const data = JSON.parse(localStorage.getItem('pomodoroData')) || {};
-  data.sessions = sessions;
+window.checkStoredSessions = function() {
+  const data = JSON.parse(localStorage.getItem('pomodoroData') || '{}');
+  console.log('Stored sessions:', data.sessions || []);
+  console.log('Total sessions:', (data.sessions || []).length);
+  console.log('Skipped sessions:', (data.sessions || []).filter(s => s.skipped).length);
+  return data.sessions || [];
+};
+
+window.clearSessions = function() {
+  const data = JSON.parse(localStorage.getItem('pomodoroData') || '{}');
+  data.sessions = [];
   localStorage.setItem('pomodoroData', JSON.stringify(data));
-
-  console.log(`✅ Fake session data generated using work=${workDuration}min, short=${shortBreak}min, long=${longBreak}min, cycles=${cycles}`);
-  alert('Fake session data has been generated! Please open the stats modal to see the chart.');
-
-  // Automatically refresh the chart if it's open
+  console.log('✅ All sessions cleared');
+  
+  // Refresh chart if open
   if (document.getElementById('statsModal').style.display === 'flex') {
-    renderStatsChart();
+    window.PomodoroStats.showStatsModal();
   }
-}
+};
