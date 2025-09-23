@@ -10,6 +10,10 @@ const statsModal = document.getElementById('statsModal');
 const closeStatsModal = document.getElementById('closeStatsModal');
 const statsChart = document.getElementById('statsChart');
 
+// Download controls
+const downloadCsvBtn = document.getElementById('downloadCsvBtn');
+const downloadChartBtn = document.getElementById('downloadChartBtn');
+
 // Time view controls
 const hourlyViewBtn = document.getElementById('hourlyView');
 const quarterlyViewBtn = document.getElementById('quarterlyView');
@@ -17,6 +21,257 @@ const halfViewBtn = document.getElementById('halfView');
 const dailyViewBtn = document.getElementById('dailyView');
 
 let currentTimeView = 'daily'; // Default to daily view
+
+// Download CSV function
+function downloadSessionsCSV() {
+    const data = JSON.parse(localStorage.getItem('pomodoroData')) || {};
+    const sessions = data.sessions || [];
+    
+    if (sessions.length === 0) {
+        alert('No session data available to download.');
+        return;
+    }
+    
+    // CSV headers
+    const headers = [
+        'Date',
+        'Start Time', 
+        'End Time',
+        'Type',
+        'Duration (minutes)',
+        'Status',
+        'Completed',
+        'Skipped'
+    ];
+    
+    // Convert sessions to CSV rows
+    const rows = sessions.map(session => {
+        const startDate = new Date(session.start);
+        const endDate = new Date(session.end);
+        const duration = ((session.end - session.start) / 1000 / 60).toFixed(2);
+        
+        let status = 'Completed';
+        if (session.skipped) status = 'Skipped';
+        else if (session.completed === false) status = 'Incomplete';
+        
+        return [
+            startDate.toLocaleDateString(),
+            startDate.toLocaleTimeString(),
+            endDate.toLocaleTimeString(),
+            session.type.charAt(0).toUpperCase() + session.type.slice(1),
+            duration,
+            status,
+            session.completed !== false ? 'Yes' : 'No',
+            session.skipped ? 'Yes' : 'No'
+        ];
+    });
+    
+    // Combine headers and data
+    const csvContent = [headers, ...rows]
+        .map(row => row.map(cell => `"${cell}"`).join(','))
+        .join('\n');
+    
+    // Create and download the file
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    link.setAttribute('href', url);
+    link.setAttribute('download', `pomodoro-sessions-${new Date().toISOString().split('T')[0]}.csv`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+
+// Download Chart as PNG function
+function downloadChartAsPNG() {
+    // Temporarily switch to daily view for download if not already
+    const originalView = currentTimeView;
+    const needsViewChange = currentTimeView !== 'daily';
+    
+    if (needsViewChange) {
+        currentTimeView = 'daily';
+        renderStatsChart();
+    }
+    
+    // Create a canvas element
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    
+    // Set canvas dimensions
+    const chartContainer = document.getElementById('statsChart');
+    const containerRect = chartContainer.getBoundingClientRect();
+    canvas.width = 800;
+    canvas.height = 400;
+    
+    // Clear canvas with white background
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    // Draw title
+    ctx.fillStyle = '#333333';
+    ctx.font = 'bold 20px Arial';
+    ctx.textAlign = 'center';
+    ctx.fillText('Pomodoro Sessions - 24 Hour View', canvas.width / 2, 30);
+    
+    // Draw subtitle with date
+    ctx.font = '14px Arial';
+    ctx.fillText(new Date().toLocaleDateString(), canvas.width / 2, 50);
+    
+    // Chart area dimensions
+    const chartX = 80;
+    const chartY = 80;
+    const chartWidth = canvas.width - 160;
+    const chartHeight = 240;
+    
+    // Get data
+    const data = JSON.parse(localStorage.getItem('pomodoroData')) || {};
+    const sessions = data.sessions || [];
+    
+    const now = new Date();
+    const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+    const totalMinutesInDay = 24 * 60;
+    
+    // Filter sessions for today
+    const todaySessions = sessions.filter(s => s.start >= startOfDay && s.start < startOfDay + (totalMinutesInDay * 60 * 1000));
+    
+    // Categories
+    const categories = [
+        { name: 'Work', type: 'work', color: '#e57373' },
+        { name: 'Short Break', type: 'short', color: '#65a2ff' },
+        { name: 'Long Break', type: 'long', color: '#81c784' }
+    ];
+    
+    const rowHeight = chartHeight / categories.length;
+    
+    // Draw category labels and bars
+    categories.forEach((cat, index) => {
+        const y = chartY + (index * rowHeight);
+        
+        // Draw category label
+        ctx.fillStyle = '#333333';
+        ctx.font = '14px Arial';
+        ctx.textAlign = 'right';
+        ctx.fillText(cat.name, chartX - 10, y + (rowHeight / 2) + 5);
+        
+        // Draw horizontal grid line
+        ctx.strokeStyle = '#e0e0e0';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(chartX, y + rowHeight);
+        ctx.lineTo(chartX + chartWidth, y + rowHeight);
+        ctx.stroke();
+        
+        // Draw bars for this category
+        todaySessions
+            .filter(s => s.type === cat.type)
+            .forEach(session => {
+                const startMinute = (session.start - startOfDay) / (1000 * 60);
+                const endMinute = (session.end - startOfDay) / (1000 * 60);
+                
+                const barX = chartX + (startMinute / totalMinutesInDay) * chartWidth;
+                const barWidth = ((endMinute - startMinute) / totalMinutesInDay) * chartWidth;
+                const barY = y + 10;
+                const barHeight = rowHeight - 20;
+                
+                // Set color based on session status
+                if (session.skipped) {
+                    ctx.fillStyle = '#999999';
+                } else {
+                    ctx.fillStyle = cat.color;
+                }
+                
+                // Draw bar
+                ctx.fillRect(barX, barY, barWidth, barHeight);
+                
+                // Draw border
+                ctx.strokeStyle = '#ffffff';
+                ctx.lineWidth = 1;
+                ctx.strokeRect(barX, barY, barWidth, barHeight);
+            });
+    });
+    
+    // Draw chart border
+    ctx.strokeStyle = '#333333';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(chartX, chartY, chartWidth, chartHeight);
+    
+    // Draw time labels (every 2 hours for better granularity)
+    ctx.fillStyle = '#666666';
+    ctx.font = '12px Arial';
+    ctx.textAlign = 'center';
+    
+    for (let hour = 0; hour <= 24; hour += 2) {
+        const x = chartX + (hour / 24) * chartWidth;
+        ctx.fillText(`${hour}:00`, x, chartY + chartHeight + 20);
+        
+        // Draw vertical grid lines (lighter for 2-hour intervals)
+        if (hour > 0 && hour < 24) {
+            ctx.strokeStyle = '#e0e0e0';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(x, chartY);
+            ctx.lineTo(x, chartY + chartHeight);
+            ctx.stroke();
+        }
+    }
+    
+    // Add lighter grid lines for hourly intervals
+    ctx.strokeStyle = '#f0f0f0';
+    ctx.lineWidth = 0.5;
+    for (let hour = 1; hour < 24; hour++) {
+        if (hour % 2 !== 0) { // Only draw for odd hours (1, 3, 5, etc.)
+            const x = chartX + (hour / 24) * chartWidth;
+            ctx.beginPath();
+            ctx.moveTo(x, chartY);
+            ctx.lineTo(x, chartY + chartHeight);
+            ctx.stroke();
+        }
+    }
+    
+    // Draw legend
+    const legendY = chartY + chartHeight + 60;
+    let legendX = chartX;
+    
+    ctx.font = '12px Arial';
+    ctx.textAlign = 'left';
+    
+    categories.forEach((cat, index) => {
+        // Color box
+        ctx.fillStyle = cat.color;
+        ctx.fillRect(legendX, legendY, 15, 15);
+        
+        // Label
+        ctx.fillStyle = '#333333';
+        ctx.fillText(cat.name, legendX + 20, legendY + 12);
+        
+        legendX += ctx.measureText(cat.name).width + 40;
+    });
+    
+    // Add skipped indicator
+    ctx.fillStyle = '#999999';
+    ctx.fillRect(legendX, legendY, 15, 15);
+    ctx.fillStyle = '#333333';
+    ctx.fillText('Skipped', legendX + 20, legendY + 12);
+    
+    // Convert canvas to blob and download
+    canvas.toBlob(function(blob) {
+        const link = document.createElement('a');
+        const url = URL.createObjectURL(blob);
+        link.setAttribute('href', url);
+        link.setAttribute('download', `pomodoro-chart-${new Date().toISOString().split('T')[0]}.png`);
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
+        // Restore original view if it was changed
+        if (needsViewChange) {
+            currentTimeView = originalView;
+            renderStatsChart();
+        }
+    });
+}
 
 function renderStatsChart() {
     statsChart.innerHTML = ''; // Clear previous chart
@@ -195,6 +450,15 @@ if (statsBtn && statsModal && closeStatsModal) {
             closeStatsModalFunc();
         }
     };
+}
+
+// Event listeners for download buttons
+if (downloadCsvBtn) {
+    downloadCsvBtn.onclick = downloadSessionsCSV;
+}
+
+if (downloadChartBtn) {
+    downloadChartBtn.onclick = downloadChartAsPNG;
 }
 
 // Event listeners for time view controls

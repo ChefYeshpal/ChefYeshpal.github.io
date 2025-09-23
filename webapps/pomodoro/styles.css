@@ -583,6 +583,32 @@ body.break-bg .task-content input[type="checkbox"] {
   border-color: #0056b3;
 }
 
+/* Download Controls */
+.download-controls {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.download-btn {
+  padding: 8px 16px;
+  border: 2px solid #28a745;
+  border-radius: 6px;
+  background: #28a745;
+  color: white;
+  cursor: pointer;
+  font-size: 0.9em;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.download-btn:hover {
+  background: #218838;
+  border-color: #218838;
+}
+
 .stats-chart-container {
   display: grid;
   /* A column for labels and a column for the graph */

@@ -88,3 +88,6 @@ Update: I'm using ai for the stuff I dont understand, which still includes most 
   - Added filters in stats dialogue, so it should now show hourly, quaterly (6 hours), half-day (12 hours) and full (24 hours) for easier looking into if it's working or not
     - Also made it so that the bar glows a bit when I hover my mouse over it
   - Added gray areas to tell what amount of time you have skipped in work and break
+- 23 September 2025
+  - Added thing to download your data in csv and in png
+  - Updated the graph format a bit so that it's got more intervals
