@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Webapps Hub</title>
+    <style>
+        :root{
+            --bg:#0f1724; --card:#0b1220; --accent:#06b6d4; --muted:#9aa4b2; --glass:rgba(255,255,255,0.03);
+            --radius:12px; --maxw:900px;
+            font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+            color-scheme: dark;
+        }
+        html,body{height:100%; margin:0; background:linear-gradient(180deg,#071025 0%, #071226 60%); color:#e6eef6;}
+        .container{max-width:var(--maxw); margin:48px auto; padding:28px; background:var(--glass); border-radius:16px; box-shadow:0 6px 30px rgba(2,6,23,0.6);}
+        header{display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:20px;}
+        h1{font-size:1.25rem; margin:0; letter-spacing:0.2px;}
+        p.lead{margin:6px 0 0; color:var(--muted); font-size:0.95rem;}
+        nav.cards{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:14px; margin-top:20px;}
+        a.card{display:block; text-decoration:none; background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent); padding:18px; border-radius:var(--radius); border:1px solid rgba(255,255,255,0.03); transition:transform .12s ease, box-shadow .12s ease;}
+        a.card:hover{transform:translateY(-6px); box-shadow:0 10px 30px rgba(2,12,30,0.6);}
+        .card h2{margin:0 0 6px; font-size:1rem;}
+        .card p{margin:0; color:var(--muted); font-size:0.9rem;}
+        .meta{display:flex; gap:8px; margin-top:10px; align-items:center; color:var(--accent); font-size:0.85rem;}
+        footer{margin-top:22px; color:var(--muted); font-size:0.85rem; text-align:center;}
+        @media (max-width:420px){ .container{margin:18px; padding:16px;} h1{font-size:1rem;} }
+    </style>
+</head>
+<body>
+    <main class="container" role="main">
+        <header>
+            <div>
+                <h1>My Webapps</h1>
+                <p class="lead">Quick links to local webapps — Pomodoro and Chess.</p>
+            </div>
+        </header>
+
+        <nav class="cards" aria-label="webapps">
+            <a class="card" href="webapps/pomodoro/index.html" title="Open Pomodoro webapp">
+                <h2>Pomodoro</h2>
+                <p>Focus timer with work/break cycles. Click to open the Pomodoro app (webapps/pomodoro/index.html).</p>
+                <div class="meta">⏱️ Open app</div>
+            </a>
+
+            <a class="card" href="webapps/webapp-chess/index.html" title="Open Chess webapp">
+                <h2>Webapp — Chess</h2>
+                <p>Browser chess experience. Click to open the Chess app (webapps/webapp-chess/index.html).</p>
+                <div class="meta">♟️ Open app</div>
+            </a>
+        </nav>
+
+        <footer>
+            If the links don't load, ensure the folders exist at /webapps/pomodoro/ and /webapps/webapp-chess/.
+        </footer>
+    </main>
+</body>
+</html>
