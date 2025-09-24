@@ -1,0 +1,3 @@
+[submodule "webapps/webapp-chess"]
+	path = webapps/webapp-chess
+	url = https://github.com/ChefYeshpal/webapp-chess
