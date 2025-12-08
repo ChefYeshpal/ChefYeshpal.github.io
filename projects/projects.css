@@ -1,0 +1,128 @@
+:root {
+  --page-bg: #17181c;
+  --panel-bg: #23243a;
+  --panel-border: #2f3046;
+  --text-primary: #e2e2e2;
+  --text-muted: #9aa0b8;
+  --accent: #8bd5d5;
+  --accent-strong: #42e0e0;
+}
+
+body {
+  background-color: var(--page-bg);
+  color: var(--text-primary);
+  font-family: Arial, sans-serif;
+}
+
+.projects-page {
+  min-height: 100vh;
+  padding: 48px 24px 64px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.projects-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.eyebrow {
+  font-size: 0.85rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 8px;
+}
+
+.projects-header h1 {
+  margin: 0 0 12px;
+  font-size: 2.25rem;
+}
+
+.lede {
+  margin: 0 auto;
+  max-width: 640px;
+  font-size: 1.05rem;
+  color: var(--text-muted);
+}
+
+.projects-section {
+  background-color: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+  border-radius: 14px;
+  padding: 32px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+}
+
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 24px;
+}
+
+.project-card {
+  padding: 20px;
+  border: 1px solid var(--panel-border);
+  border-radius: 12px;
+  background-color: #1f2031;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.project-card:hover {
+  border-color: var(--accent-strong);
+  transform: translateY(-2px);
+}
+
+.project-card h2 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: var(--accent-strong);
+}
+
+.project-description {
+  margin: 0;
+  color: var(--text-primary);
+  line-height: 1.5;
+}
+
+.project-links {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.project-links a {
+  color: var(--accent);
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.project-links a:hover,
+.project-links a:focus {
+  color: var(--accent-strong);
+  text-decoration: underline;
+}
+
+.projects-status {
+  text-align: center;
+  margin-bottom: 24px;
+  color: var(--text-muted);
+  font-size: 1rem;
+}
+
+.projects-status.error {
+  color: #ff9f9f;
+}
+
+@media (max-width: 640px) {
+  .projects-section {
+    padding: 24px;
+  }
+
+  .projects-header h1 {
+    font-size: 1.85rem;
+  }
+}

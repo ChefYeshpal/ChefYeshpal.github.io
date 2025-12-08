@@ -1,0 +1,68 @@
+[
+	{
+		"title": "Lonely Chess",
+		"repoLink": "https://github.com/Chefyeshpal/webapp-chess",
+		"demoLink": "https://chefyeshpal.github.io/webapp-chess/",
+		"description": "Solo chess trainer with progressive puzzles."
+	},
+	{
+		"title": "Money Maker",
+		"repoLink": "https://github.com/Chefyeshpal/webapp-moneymaker",
+		"demoLink": "https://chefyeshpal.github.io/webapp-moneymaker/",
+		"description": "Budgeting sandbox that visualizes compound growth."
+	},
+	{
+		"title": "Magic 8 Ball",
+		"repoLink": "https://github.com/Chefyeshpal/webapp-magic8ball",
+		"demoLink": "https://chefyeshpal.github.io/webapp-magic8ball/",
+		"description": "Playful fortune teller with custom response sets."
+	},
+	{
+		"title": "Junction Instructor",
+		"repoLink": "https://github.com/Chefyeshpal/webapp-trafficsim",
+		"demoLink": "https://chefyeshpal.github.io/webapp-trafficsim/",
+		"description": "Traffic-light simulator for timing experimentation."
+	},
+	{
+		"title": "Falling",
+		"repoLink": "https://github.com/Chefyeshpal/webapp-falling",
+		"demoLink": "https://chefyeshpal.github.io/webapp-falling/",
+		"description": "Arcade dodger that tests reflexes and pathing."
+	},
+	{
+		"title": "Translavania",
+		"repoLink": "https://github.com/Chefyeshpal/webapp-translavania",
+		"demoLink": "https://chefyeshpal.github.io/webapp-translavania/",
+		"description": "Language mini-games with spooky theming."
+	},
+	{
+		"title": "Farmer Simulator",
+		"repoLink": "https://github.com/Chefyeshpal/webapp-farmingsim",
+		"demoLink": "https://chefyeshpal.github.io/webapp-farmingsim/",
+		"description": "Resource-management farming loop in the browser."
+	},
+	{
+		"title": "Solaris",
+		"repoLink": "https://github.com/Chefyeshpal/webapp-solaris",
+		"demoLink": "https://chefyeshpal.github.io/webapp-solaris/",
+		"description": "Gravity sandbox to explore orbital mechanics."
+	},
+	{
+		"title": "Skeletor",
+		"repoLink": "https://github.com/Chefyeshpal/webapp-skeletor",
+		"demoLink": "https://chefyeshpal.github.io/webapp-skeletor/",
+		"description": "Bone-stacking puzzle with physics-based scoring."
+	},
+	{
+		"title": "Snowler",
+		"repoLink": "https://github.com/Chefyeshpal/webapp-snowler",
+		"demoLink": "https://chefyeshpal.github.io/webapp-snowler/",
+		"description": "Snowball bowling mashup with trick-shot modes."
+	},
+	{
+		"title": "Lonely Checkers",
+		"repoLink": "https://github.com/Chefyeshpal/webapp-checkers",
+		"demoLink": "https://chefyeshpal.github.io/webapp-checkers/",
+		"description": "Solo checkers puzzles for tactic drills."
+	}
+]
