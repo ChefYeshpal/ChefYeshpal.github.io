@@ -19,6 +19,15 @@
 			</header>
 
 			<section class="projects-section" aria-live="polite">
+				<div class="projects-controls">
+					<label for="projects-search" class="sr-only">Search projects</label>
+					<input
+						type="search"
+						id="projects-search"
+						placeholder="Search title or description"
+						autocomplete="off"
+					/>
+				</div>
 				<div id="projects-status" class="projects-status">Loading projects…</div>
 				<div id="projects-grid" class="projects-grid" hidden></div>
 			</section>
