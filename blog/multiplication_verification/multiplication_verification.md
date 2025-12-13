@@ -30,15 +30,16 @@ What we'll do now is:
 - In the 2nd line
   - Add the digits of 1 and 2, which gives us 3
   - 1 + 2 = 3
-  - This is also a one digit number, so let is be as it is.
+  - This is also a one digit number, so let it be as it is.
 - Then, we'll multiply the 7 and 3 we have
   - 7 x 3 = 21
-  - Let's add this too, making it 3
+  - Let's add this again to make it a one digit number, making it 3
   - 2 + 1 = 3
   - No need for further addition, as it's a single digit number.
 - In the 5th line
   - Add the digits 6, 2 and 4, which gives us 12
-  - then, as 12 is a **two digit** number rather than one digit, we shall add it's numbers as well until it is also a one digit number
+    - 6 + 2 + 4 = 12
+  - Then, as 12 is a **two digit** number rather than one digit, we shall add it's numbers as well until it is also a one digit number
   - 1 + 2 = 3
   - 3 is a one digit number, so leave it be.
 
@@ -114,9 +115,9 @@ You will always end up with the same final single-digit number.
 
 The digital root method is a handy way to **check** your multiplication answers quickly. If the digital root of your calculated answer doesn’t match the digital root of the multiplied digital roots, you know something went wrong.
 
-### Keep In Mind
+### Keep In Mind...
 
-- This trick can catch many mistakes, but **not all**. Sometimes different wrong answers can have the same digital root, so it’s not a *perfect* proof.
+- This trick can catch many mistakes, but **not all**. Sometimes different wrong answers can have the same digital root, so it’s **not** a *perfect* proof.
 - It also works for addition and subtraction, making it a neat universal math check!
 
 ## Any cases where it doesn't work?
@@ -151,7 +152,7 @@ This is a consequence of how modulo arithmetic works:
 - For very important or complex calculations, **never rely on this method alone**.
 - Always do a full check or use a calculator for perfect certainty.
 
-# try it yourself!
+# Try it yourself!
 
 Multiply the two numbers below. I've given the answer beforehand, all you have to do is check wether it's right or not!
 
