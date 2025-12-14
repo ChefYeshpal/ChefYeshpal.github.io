@@ -8,7 +8,8 @@
   <link rel="icon" type="image/png" href="images/lildemonsprite.png">
 </head>
 <body>
-  <aside class="toc">
+  <div class="toc-overlay" aria-hidden="true"></div>
+  <aside class="toc" id="toc-panel">
     <div class="toc-title">Contents</div>
     <ul>
       <li><a href="#youtube">YouTube</a></li>
@@ -18,9 +19,17 @@
     </ul>
   </aside>
   <main class="main-content">
-    <header>
-      <h1>links.</h1>
-    </header>
+  <header class="links-header">
+    <button class="toc-trigger" type="button" aria-expanded="false" aria-controls="toc-panel" aria-label="Toggle contents">
+    <span></span>
+    <span></span>
+    <span></span>
+    </button>
+    <div class="links-heading">
+    <h1>links.</h1>
+    <a class="back-link-mobile" href="index.html">back?</a>
+    </div>
+  </header>
 
     <section id="youtube">
       <h2>YouTube</h2>
@@ -47,6 +56,34 @@
 
     <img id="sprite" src="images/lildemonsprite.png" alt="sprite">
   </main>
+  <script>
+    (() => {
+      const trigger = document.querySelector('.toc-trigger');
+      const overlay = document.querySelector('.toc-overlay');
+      const body = document.body;
+      const tocLinks = document.querySelectorAll('.toc a');
+      if (!trigger || !overlay) return;
+
+      const closeMenu = () => {
+        body.classList.remove('toc-open');
+        trigger.setAttribute('aria-expanded', 'false');
+      };
+
+      const toggleMenu = () => {
+        const isOpen = body.classList.toggle('toc-open');
+        trigger.setAttribute('aria-expanded', String(isOpen));
+      };
+
+      trigger.addEventListener('click', toggleMenu);
+      overlay.addEventListener('click', closeMenu);
+      tocLinks.forEach((link) => link.addEventListener('click', closeMenu));
+      window.addEventListener('resize', () => {
+        if (window.innerWidth > 720) {
+          closeMenu();
+        }
+      });
+    })();
+  </script>
 </body>
 </html>
 

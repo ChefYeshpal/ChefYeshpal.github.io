@@ -77,3 +77,16 @@ a:hover {
   z-index: 1000;
   pointer-events: none;
 }
+
+@media (max-width: 540px) {
+  body {
+    padding: 0 8px 24px;
+  }
+
+  .container {
+    margin: 24px auto;
+    padding: 20px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+}

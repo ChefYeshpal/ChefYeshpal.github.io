@@ -60,6 +60,25 @@ header {
   text-align: left;
 }
 
+.links-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.links-heading {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.toc-trigger,
+.back-link-mobile,
+.toc-overlay {
+  display: none;
+}
+
 h1 {
   font-size: 3.2em;
   color: #e4c4fe;
@@ -110,4 +129,94 @@ a:hover {
   width: 128px;
   z-index: 1000;
   pointer-events: none;
+}
+
+@media (max-width: 720px) {
+  body {
+    padding: 0;
+  }
+
+  body.toc-open {
+    overflow: hidden;
+  }
+
+  .toc {
+    transform: translateX(-105%);
+    transition: transform 0.3s ease;
+    width: min(260px, 82vw);
+    box-shadow: 0 20px 40px rgba(5, 6, 10, 0.75);
+    z-index: 1200;
+  }
+
+  body.toc-open .toc {
+    transform: translateX(0);
+  }
+
+  .toc-overlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(4, 5, 10, 0.6);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    z-index: 1000;
+  }
+
+  body.toc-open .toc-overlay {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .main-content {
+    margin-left: 0;
+    padding: 28px 20px 60px;
+  }
+
+  .toc-trigger {
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1px solid #333a52;
+    background: #1d1f2c;
+    cursor: pointer;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+  }
+
+  .toc-trigger span {
+    display: block;
+    width: 22px;
+    height: 2px;
+    margin: 0 auto;
+    background: #f8fafc;
+  }
+
+  .toc-trigger:focus-visible {
+    outline: 2px solid #80c7fa;
+    outline-offset: 2px;
+  }
+
+  .back-link-mobile {
+    display: inline-flex;
+    font-size: 0.95em;
+    color: #80c7fa;
+    text-decoration: underline;
+    width: fit-content;
+  }
+
+  .links-header {
+    align-items: flex-start;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .links-heading {
+    align-items: center;
+    text-align: center;
+    width: 100%;
+  }
 }
