@@ -1,92 +1,166 @@
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap");
+
+:root {
+  --page-bg: #101114;
+  --surface-bg: #191b20;
+  --panel-bg: #17191e;
+  --panel-border: #363941;
+  --card-bg: #21242b;
+  --text-primary: #f3f6ff;
+  --text-muted: #a3a8b8;
+  --accent: #78e6ca;
+  --accent-strong: #49c9ac;
+  --shadow: #08090b;
+}
+
+* {
+  box-sizing: border-box;
+}
+
 body {
-  font-family: Arial, sans-serif;
-  background: #17181c;
+  background:
+    linear-gradient(rgba(120, 230, 202, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(120, 230, 202, 0.025) 1px, transparent 1px),
+    var(--page-bg);
+  background-size: 32px 32px;
+  color: var(--text-primary);
+  font-family: "Space Grotesk", "Avenir Next", "Nunito", "Segoe UI", sans-serif;
   margin: 0;
-  padding: 0;
-  color: #e2e2e2;
+  min-height: 100vh;
+  padding: 32px 16px 72px;
 }
 
 .container {
-  max-width: 500px;
-  margin: 40px auto;
-  padding: 24px;
-  background: #23243a;
-  border-radius: 10px;
-  box-shadow: 0 2px 16px rgba(0,0,0,0.25);
+  background: var(--surface-bg);
+  border: 2px solid var(--panel-border);
+  border-radius: 4px;
+  box-shadow: 8px 8px 0 var(--shadow);
+  margin: 0 auto;
+  max-width: 720px;
+  padding: clamp(24px, 6vw, 56px);
+  position: relative;
 }
 
-h1, h2 {
+.container::before {
+  background: var(--accent);
+  content: "";
+  height: 8px;
+  left: -2px;
+  position: absolute;
+  top: -2px;
+  width: 96px;
+}
+
+h1,
+h2 {
   margin: 0;
-  text-align: center;
 }
 
 h1 {
-  font-size: 2em;
-  margin-bottom: 10px;
+  font-size: clamp(2.4rem, 8vw, 4.5rem);
+  font-weight: 700;
+  letter-spacing: -0.08em;
+  line-height: 0.95;
+  margin-bottom: 14px;
 }
 
 h2 {
-  font-size: 1.15em;
-  font-weight: normal;
-  color: #8bd5d5;
-  margin-bottom: 16px;
+  color: var(--accent);
+  font-size: clamp(1.05rem, 3vw, 1.35rem);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  margin-bottom: 30px;
 }
 
 .desc {
-  margin-bottom: 18px;
-  line-height: 1.6;
-}
-
-.section-title {
-  font-size: 1.1em;
-  margin-top: 22px;
-  color: #42e0e0;
-  border-bottom: 1px solid #32343f;
-  padding-bottom: 4px;
-  margin-bottom: 7px;
-}
-
-ul {
-  padding-left: 22px;
+  color: var(--text-muted);
+  line-height: 1.7;
+  margin-bottom: 24px;
 }
 
 a {
-  color: #66d9ef;
-  text-decoration: none;
-  transition: color 0.15s;
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: rgba(120, 230, 202, 0.35);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+  transition: color 0.15s ease, text-decoration-color 0.15s ease;
 }
 
-a:hover {
-  color: #ae81ff;
-  text-decoration: underline;
+a:hover,
+a:focus-visible {
+  color: var(--text-primary);
+  text-decoration-color: var(--accent);
+}
+
+.section-title {
+  border-bottom: 2px solid var(--panel-border);
+  color: var(--accent);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  margin: 38px 0 16px;
+  padding-bottom: 10px;
+  text-transform: uppercase;
+}
+
+ul {
+  background: var(--panel-bg);
+  border: 2px solid var(--panel-border);
+  border-radius: 3px;
+  box-shadow: 0 4px 0 var(--shadow);
+  line-height: 1.6;
+  list-style: none;
+  margin: 0;
+  padding: 16px 20px;
+}
+
+li {
+  color: var(--text-muted);
+  padding: 7px 0 7px 22px;
+  position: relative;
+}
+
+li::before {
+  color: var(--accent);
+  content: "◆";
+  font-size: 0.62rem;
+  left: 0;
+  position: absolute;
+  top: 12px;
 }
 
 .footer {
-  text-align: center;
-  margin-top: 28px;
-  color: #888;
-  font-size: 0.95em;
+  border-top: 2px solid var(--panel-border);
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin-top: 42px;
+  padding-top: 18px;
+  text-align: left;
 }
 
 #sprite {
-  position: fixed;
-  /*top: 20px; */
   bottom: 20px;
+  pointer-events: none;
+  position: fixed;
   right: 20px;
   width: 128px;
   z-index: 1000;
-  pointer-events: none;
 }
 
 @media (max-width: 540px) {
   body {
-    padding: 0 8px 24px;
+    padding: 16px 12px 48px;
   }
 
   .container {
-    margin: 24px auto;
-    padding: 20px;
-    width: 100%;
-    box-sizing: border-box;
+    padding: 28px 20px;
+  }
+
+  #sprite {
+    bottom: 12px;
+    right: 12px;
+    width: 88px;
   }
 }
