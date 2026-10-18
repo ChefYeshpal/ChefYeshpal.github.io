@@ -69,27 +69,14 @@ function renderProjects(projects, message) {
   statusNode.classList.remove("error");
 
   if (!Array.isArray(projects) || projects.length === 0) {
-    projectsGrid.innerHTML = "";
+    projectsGrid.replaceChildren();
     projectsGrid.hidden = true;
     statusNode.hidden = false;
     statusNode.textContent = message || "No projects to show yet.";
     return;
   }
 
-  projectsGrid.innerHTML = projects
-    .map(
-      (project) => `
-        <article class="project-card">
-          <h2>${project.title}</h2>
-          <p class="project-description">${project.description}</p>
-          <div class="project-links">
-            <a class="project-link project-link-demo" href="${project.demoLink}" target="_blank" rel="noopener">Demo</a>
-            <a class="project-link project-link-repo" href="${project.repoLink}" target="_blank" rel="noopener">Repo</a>
-          </div>
-        </article>
-      `
-    )
-    .join("");
+  projectsGrid.replaceChildren(...projects.map(createProjectCard));
 
   projectsGrid.hidden = false;
 
@@ -99,6 +86,47 @@ function renderProjects(projects, message) {
   } else {
     statusNode.hidden = true;
   }
+}
+
+function createProjectCard(project) {
+  const card = document.createElement("article");
+  card.className = "project-card";
+
+  const title = document.createElement("h2");
+  title.textContent = project.title || "Untitled project";
+  card.append(title);
+
+  if (project.description) {
+    const description = document.createElement("p");
+    description.className = "project-description";
+    description.textContent = project.description;
+    card.append(description);
+  }
+
+  const links = document.createElement("div");
+  links.className = "project-links";
+  addProjectLink(links, project.demoLink, "Demo", "project-link-demo");
+  addProjectLink(links, project.repoLink, "Repo", "project-link-repo");
+
+  if (links.childElementCount > 0) {
+    card.append(links);
+  }
+
+  return card;
+}
+
+function addProjectLink(container, href, label, className) {
+  if (!href) {
+    return;
+  }
+
+  const link = document.createElement("a");
+  link.className = `project-link ${className}`;
+  link.href = href;
+  link.target = "_blank";
+  link.rel = "noopener";
+  link.textContent = label;
+  container.append(link);
 }
 
 function summaryText(visible, total) {
