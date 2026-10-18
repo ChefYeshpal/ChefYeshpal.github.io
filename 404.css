@@ -1,0 +1,106 @@
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap");
+
+:root {
+  --error-bg: #101114;
+  --error-panel: #191b20;
+  --error-border: #363941;
+  --error-text: #f3f6ff;
+  --error-muted: #a3a8b8;
+  --error-accent: #78e6ca;
+}
+
+body {
+  align-items: center;
+  background: var(--error-bg);
+  color: var(--error-text);
+  display: flex;
+  font-family: "Space Grotesk", "Segoe UI", sans-serif;
+  justify-content: center;
+  margin: 0;
+  min-height: 100vh;
+  padding: 24px;
+  box-sizing: border-box;
+}
+
+.error-page {
+  background: var(--error-panel);
+  border: 2px solid var(--error-border);
+  border-radius: 4px;
+  box-shadow: 8px 8px 0 #08090b;
+  max-width: 620px;
+  padding: clamp(28px, 7vw, 64px);
+  width: 100%;
+}
+
+.error-code {
+  color: var(--error-accent);
+  font-size: clamp(4rem, 18vw, 9rem);
+  font-weight: 700;
+  letter-spacing: -0.09em;
+  line-height: 0.9;
+  margin: 0 0 24px;
+}
+
+.error-page h1 {
+  font-size: clamp(1.8rem, 5vw, 3rem);
+  letter-spacing: -0.05em;
+  margin: 0 0 12px;
+}
+
+.error-page p {
+  color: var(--error-muted);
+  line-height: 1.6;
+  margin: 0 0 32px;
+  max-width: 40rem;
+}
+
+.error-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.error-button {
+  background: var(--error-accent);
+  border: 2px solid var(--error-accent);
+  border-radius: 3px;
+  box-shadow: 0 4px 0 #247b69;
+  color: #061713;
+  font-weight: 700;
+  padding: 11px 18px;
+  text-decoration: none;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+.error-button:hover,
+.error-button:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 0 #247b69;
+}
+
+.error-button:active {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 #247b69;
+}
+
+.error-button-secondary {
+  background: transparent;
+  box-shadow: 0 4px 0 #08090b;
+  color: var(--error-text);
+}
+
+.error-button-secondary:hover,
+.error-button-secondary:focus-visible {
+  color: var(--error-accent);
+  box-shadow: 0 6px 0 #08090b;
+}
+
+@media (max-width: 480px) {
+  .error-actions {
+    flex-direction: column;
+  }
+
+  .error-button {
+    text-align: center;
+  }
+}
