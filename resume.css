@@ -1,0 +1,371 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap");
+
+:root {
+  --ink: #17211f;
+  --muted: #5c6865;
+  --line: #d8dfdc;
+  --accent: #13866f;
+  --accent-soft: #e2f2ed;
+  --paper: #ffffff;
+  --page: #e9eeeb;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--page);
+  color: var(--ink);
+  font-family: "Space Grotesk", "Avenir Next", "Segoe UI", sans-serif;
+  margin: 0;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+.resume {
+  background: var(--paper);
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+  display: flex;
+  flex-direction: column;
+  margin: 28px auto;
+  max-width: 210mm;
+  min-height: 297mm;
+  padding: 17mm 18mm 13mm;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+a:hover,
+a:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.resume-header {
+  align-items: end;
+  border-bottom: 3px solid var(--ink);
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 18px;
+}
+
+.eyebrow,
+.section-number,
+.contact,
+.project-heading span,
+.resume-footer {
+  font-family: "DM Mono", "Courier New", monospace;
+}
+
+.eyebrow {
+  color: var(--accent);
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  margin: 0 0 8px;
+  text-transform: uppercase;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin-top: 0;
+}
+
+h1 {
+  font-size: 3.4rem;
+  letter-spacing: -0.09em;
+  line-height: 0.9;
+  margin-bottom: 10px;
+}
+
+.role {
+  color: var(--muted);
+  font-size: 1rem;
+  margin-bottom: 0;
+}
+
+.contact {
+  color: var(--muted);
+  display: grid;
+  font-size: 0.7rem;
+  gap: 5px;
+  line-height: 1.35;
+  text-align: right;
+}
+
+.intro {
+  border-bottom: 1px solid var(--line);
+  padding: 19px 0 21px;
+}
+
+.intro p {
+  color: var(--muted);
+  font-size: 0.92rem;
+  line-height: 1.6;
+  margin-bottom: 0;
+  max-width: 640px;
+}
+
+.resume-grid {
+  display: grid;
+  gap: 30px;
+  grid-template-columns: minmax(0, 1.7fr) minmax(180px, 0.9fr);
+  padding-top: 24px;
+}
+
+section + section {
+  margin-top: 29px;
+}
+
+.section-heading {
+  align-items: center;
+  border-bottom: 2px solid var(--ink);
+  display: flex;
+  gap: 9px;
+  margin-bottom: 15px;
+  padding-bottom: 7px;
+}
+
+.section-number {
+  color: var(--accent);
+  font-size: 0.66rem;
+  font-weight: 500;
+}
+
+h2 {
+  font-size: 0.91rem;
+  letter-spacing: 0.05em;
+  margin-bottom: 0;
+  text-transform: uppercase;
+}
+
+h3 {
+  font-size: 0.94rem;
+  margin-bottom: 5px;
+}
+
+.project,
+.timeline-item {
+  border-left: 3px solid var(--accent-soft);
+  margin-bottom: 19px;
+  padding-left: 13px;
+}
+
+.project:last-child,
+.timeline-item:last-child {
+  margin-bottom: 0;
+}
+
+.project-heading {
+  align-items: baseline;
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+}
+
+.project-heading span {
+  color: var(--muted);
+  flex-shrink: 0;
+  font-size: 0.7rem;
+}
+
+.project p,
+.timeline-item p,
+.education-item p,
+.interests {
+  color: var(--muted);
+  font-size: 0.78rem;
+  line-height: 1.55;
+  margin-bottom: 7px;
+}
+
+.project-links {
+  font-family: "DM Mono", "Courier New", monospace;
+  font-size: 0.68rem !important;
+  margin-bottom: 0 !important;
+}
+
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.tag-list li {
+  background: var(--accent-soft);
+  border-radius: 2px;
+  color: var(--ink);
+  font-size: 0.72rem;
+  padding: 6px 8px;
+}
+
+.tag-list li span {
+  color: var(--muted);
+  font-size: 0.62rem;
+}
+
+.education-item {
+  border-left: 3px solid var(--accent-soft);
+  margin-bottom: 15px;
+  padding-left: 13px;
+}
+
+.education-item h3 {
+  font-size: 0.78rem;
+  margin-bottom: 4px;
+}
+
+.education-item p {
+  font-family: "DM Mono", "Courier New", monospace;
+  font-size: 0.7rem;
+  margin-bottom: 0;
+}
+
+.interests {
+  line-height: 1.9;
+  margin-bottom: 0;
+}
+
+.resume-footer {
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  display: flex;
+  font-size: 0.7rem;
+  justify-content: space-between;
+  margin-top: auto;
+  padding-top: 10px;
+}
+
+.resume-signature {
+  height: 32px;
+  object-fit: contain;
+  width: 32px;
+}
+
+@page {
+  size: A4;
+  margin: 0;
+}
+
+@media screen {
+  .resume {
+    box-shadow: 0 12px 35px rgba(23, 33, 31, 0.12);
+    position: relative;
+  }
+
+  .resume::after {
+    border-top: 1px dashed rgba(19, 134, 111, 0.35);
+    content: "A4 page boundary";
+    color: rgba(19, 134, 111, 0.6);
+    font-family: "DM Mono", "Courier New", monospace;
+    font-size: 0.6rem;
+    left: 0;
+    padding-top: 3px;
+    pointer-events: none;
+    position: absolute;
+    right: 0;
+    top: 297mm;
+  }
+}
+
+@media print {
+  body {
+    background: var(--paper);
+    font-size: 9.5pt;
+  }
+
+  .resume {
+    margin: 0;
+    max-width: none;
+    min-height: 296mm;
+    width: 210mm;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  .project,
+  .timeline-item,
+  .education-item {
+    break-inside: avoid;
+  }
+
+  .intro {
+    padding: 14px 0 16px;
+  }
+
+  .resume-grid {
+    gap: 24px;
+    padding-top: 18px;
+  }
+
+  section + section {
+    margin-top: 23px;
+  }
+
+  .section-heading {
+    margin-bottom: 11px;
+  }
+
+  .project,
+  .timeline-item {
+    margin-bottom: 14px;
+  }
+
+  .project p,
+  .timeline-item p,
+  .education-item p,
+  .interests {
+    font-size: 9.5pt;
+    line-height: 1.4;
+    margin-bottom: 5px;
+  }
+
+  .contact,
+  .eyebrow,
+  .section-number,
+  .project-heading span,
+  .project-links,
+  .education-item p,
+  .resume-footer,
+  .tag-list li span {
+    font-size: 8.5pt !important;
+  }
+}
+
+@media (max-width: 700px) {
+  .resume {
+    margin: 0;
+    padding: 32px 24px;
+  }
+
+  .resume-header,
+  .project-heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .contact {
+    text-align: left;
+  }
+
+  .resume-grid {
+    grid-template-columns: 1fr;
+  }
+}

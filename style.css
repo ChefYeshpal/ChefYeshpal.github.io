@@ -131,6 +131,37 @@ li::before {
   top: 12px;
 }
 
+.resume-button {
+  align-items: center;
+  background: var(--accent-strong);
+  border: 2px solid var(--accent-strong);
+  border-radius: 3px;
+  box-shadow: 0 4px 0 var(--shadow);
+  color: #061713;
+  display: flex;
+  font-weight: 700;
+  justify-content: space-between;
+  margin-top: 16px;
+  padding: 14px 16px;
+  text-decoration: none;
+  transition: border-color 0.15s ease, color 0.15s ease, transform 0.12s ease,
+    box-shadow 0.12s ease;
+}
+
+.resume-button:hover,
+.resume-button:focus-visible {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #061713;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 0 var(--shadow);
+}
+
+.resume-button:active {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 var(--shadow);
+}
+
 .quick-links {
   display: grid;
   gap: 12px;
